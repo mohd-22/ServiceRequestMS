@@ -11,8 +11,8 @@ namespace ServiceRequestMS.Api.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
-        readonly IRequestService _requestService;
 
+        readonly IRequestService _requestService;
         public RequestController(IRequestService requestService)
         {
             _requestService = requestService;

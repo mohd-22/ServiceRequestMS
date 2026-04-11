@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceRequestMS.Application\ServiceRequestMS.Application.csproj" />
     <ProjectReference Include="..\ServiceRequestMS.core\ServiceRequestMS.core.csproj" />
   </ItemGroup>
 

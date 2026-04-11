@@ -1,18 +1,21 @@
 ﻿
+using Microsoft.AspNetCore.Http; 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.core.Models.Enums;
 using ServiceRequestMS.Core.Models;
-using Microsoft.AspNetCore.Http; 
 using System.Security.Claims;
 namespace ServiceRequestMS.data.Data;
 public class AppDbContext : DbContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+    private readonly string _connectionString;
+    public AppDbContext(DbContextOptions<AppDbContext> dbOptions, IHttpContextAccessor httpContextAccessor, IOptions<DatabaseOptions> dbSettings) : base(dbOptions)
     {
         _httpContextAccessor = httpContextAccessor;
+        _connectionString = dbSettings.Value.DefaultConnection;
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -62,6 +65,13 @@ public class AppDbContext : DbContext
 
     public DbSet<Attachment> Attachments { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
