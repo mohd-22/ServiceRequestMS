@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
@@ -61,6 +60,7 @@ namespace ServiceRequestMS.Application.Services
         private async Task<bool> HandleStaffDeactivation(Guid staffId)
         {
             var requests = await _unitOfWork.Requests.FindAllAsync(r =>
+
                 r.AssignedStaffId == staffId &&
                 r.Status != RequestStatus.Accepted &&
                 r.Status != RequestStatus.Rejected);

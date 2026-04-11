@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
-using ServiceRequestMS.data.Data;
 using ServiceRequestMS.Data.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,19 +13,19 @@ namespace ServiceRequestMS.Services
 {
     public class AuthService : IAuthService
     {
-        protected AppDbContext _context;
+        
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AuthService(AppDbContext context, IConfiguration configuration, IUnitOfWork unitOfWork) { 
-            _context = context;
+        public AuthService( IConfiguration configuration, IUnitOfWork unitOfWork) { 
+          
             _configuration = configuration;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<string> LoginAsync(LoginDto request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
+            var user = await _unitOfWork.Users.FindAsync(u => u.UserName == request.UserName);
 
             if (user == null)
                 return null;
