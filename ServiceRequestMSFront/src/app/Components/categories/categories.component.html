@@ -1,0 +1,77 @@
+<section class="categories-page">
+	<header class="header-card">
+		<h1 class="page-title">Categories</h1>
+		<p class="page-subtitle">All categories from the system.</p>
+	</header>
+
+	<section class="table-card">
+		<div class="table-header-row">
+			<h2 class="table-title">Categories List</h2>
+			<span class="count-pill">{{ categories.length }} total</span>
+		</div>
+
+		<div *ngIf="isLoading" class="state-box state-loading">Loading categories...</div>
+		<div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
+		<div *ngIf="!isLoading && !errorMessage && categories.length === 0" class="state-box state-empty">
+			No categories found.
+		</div>
+
+		<div class="table-responsive" *ngIf="!isLoading && !errorMessage && categories.length > 0">
+			<table class="table align-middle custom-table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Id</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						*ngFor="let category of categories; let i = index"
+						(click)="onCategoryClick(category)"
+						[class.selected-row]="isSelected(category.id)">
+						<td>{{ i + 1 }}</td>
+						<td class="fw-semibold">{{ category.name }}</td>
+						<td>{{ category.description || '-' }}</td>
+						<td><small class="text-muted">{{ category.id }}</small></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<section class="items-panel" *ngIf="selectedCategoryId">
+			<div class="items-header">
+				<h3 class="items-title">Items For Selected Category</h3>
+			</div>
+
+			<div *ngIf="isLoadingItems" class="state-box state-loading">Loading items...</div>
+			<div *ngIf="!isLoadingItems && itemsErrorMessage" class="state-box state-error">{{ itemsErrorMessage }}</div>
+			<div
+				*ngIf="!isLoadingItems && !itemsErrorMessage && selectedCategory && selectedCategory.items.length === 0"
+				class="state-box state-empty">
+				No items found for this category.
+			</div>
+
+			<div class="table-responsive"
+				*ngIf="!isLoadingItems && !itemsErrorMessage && selectedCategory && selectedCategory.items.length > 0">
+				<table class="table align-middle custom-table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Item Name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of selectedCategory.items; let idx = index">
+							<td>{{ idx + 1 }}</td>
+							<td class="fw-semibold">{{ item.name }}</td>
+							<td>{{ item.description || '-' }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</section>
+</section>

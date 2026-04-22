@@ -111,4 +111,17 @@ public class RequestService : IRequestService
         return ApiResponse<bool>.SuccessResponse(true, "Request Updated Succesfully");
     }
 
+    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber)
+    {
+        if (_unitOfWork.Requests == null) return ApiResponse<IEnumerable<RequestAdminDto>>.FailureResponse("There Are No Requests");
+
+        var pageResults = 2f;
+        var requestConuter = await _unitOfWork.Requests.CountAsync();
+        var pageCount =  Math.Ceiling(requestConuter / pageResults);
+
+        var requests = await _unitOfWork.Requests.GetPagedRequests(pageNumber, (int)pageCount);
+        return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponseForPaages(_mapper.Map<IEnumerable<RequestAdminDto>>(requests),pageNumber, "Requests Retrieved Succesfully");
+
+
+    }
 }

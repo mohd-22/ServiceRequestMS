@@ -1,0 +1,58 @@
+<section class="requests-page">
+  <header class="header-card">
+    <h1 class="page-title">Requests Dashboard</h1>
+    <p class="page-subtitle">Admin view for all service requests.</p>
+  </header>
+
+  <section class="table-card">
+    <div class="table-header-row">
+      <h2 class="table-title">Requests</h2>
+      <span class="request-count">{{ requests.length }} total</span>
+    </div>
+
+    <div *ngIf="isLoading" class="state-box state-loading">Loading requests...</div>
+    <div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
+    <div *ngIf="!isLoading && !errorMessage && requests.length === 0" class="state-box state-empty">
+      No requests found.
+    </div>
+
+    <div class="table-responsive" *ngIf="!isLoading && !errorMessage && requests.length > 0">
+      <table class="table align-middle custom-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Requester</th>
+            <th>Assigned Staff</th>
+            <th>Category</th>
+            <th>Item</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>
+              <div class="fw-semibold">{{ request.title }}</div>
+              <div class="text-muted small">{{ request.description }}</div>
+            </td>
+            <td>
+              <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
+            </td>
+            <td>{{ request.requesterName }}</td>
+            <td>{{ request.assignedStaffName || 'Unassigned' }}</td>
+            <td>
+              <a
+                class="category-link"
+                [routerLink]="['/categories']"
+                [queryParams]="{ categoryId: request.categoryId }">
+                {{ request.categoryName }}
+              </a>
+            </td>
+            <td>{{ request.itemName }}</td>
+            <td>{{ formatDate(request.createdDate) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>

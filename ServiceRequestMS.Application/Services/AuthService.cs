@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
@@ -23,22 +24,23 @@ namespace ServiceRequestMS.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> LoginAsync(LoginDto request)
+        public async Task<ApiResponse<string>> LoginAsync(LoginDto request)
         {
             var user = await _unitOfWork.Users.FindAsync(u => u.UserName == request.UserName);
 
             if (user == null)
-                return null;
+                return ApiResponse<string>.FailureResponse("Invalid username or password.");
             if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
-                return null;
+                return ApiResponse<string>.FailureResponse("Invalid username or password.");
             var Cheakuser = await _unitOfWork.Users.FindAsync(u => u.UserName == request.UserName);
 
             if (Cheakuser != null && !Cheakuser.IsActive)       
             {
-                throw new Exception("Your account has been deactivated. Please contact the administrator.");
+                return ApiResponse<string>.FailureResponse("Your account has been deactivated. Please contact the administrator.");
+                // throw new Exception("Your account has been deactivated. Please contact the administrator.");
             }
 
-            return CreateToken(user);
+            return ApiResponse<string>.SuccessResponse(CreateToken(user),"Login successful.");
         }
 
         private string CreateToken(User user)

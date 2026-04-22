@@ -3,6 +3,7 @@ public class ApiResponse<T>
 {
     public bool Success { get; set; }
     public string Message { get; set; } = string.Empty;
+    public int Page { get; set; }
     public T? Data { get; set; }
     public List<string>? Errors { get; set; }
 
@@ -23,11 +24,23 @@ public class ApiResponse<T>
         Errors = errors;
         Data = default;
     }
+    public ApiResponse(T data, int page, string message)
+    {
+        Success = true;
+        Message = message;
+        Page = page;
+        Data = data;
+    }
 
    
     public static ApiResponse<T> SuccessResponse(T data, string message = "Operation completed successfully")
     {
         return new ApiResponse<T>(data, message);
+
+    }
+    public static ApiResponse<T> SuccessResponseForPaages(T data,int page, string message = "Operation completed successfully")
+    {
+        return new ApiResponse<T>(data, page, message );
 
     }
 

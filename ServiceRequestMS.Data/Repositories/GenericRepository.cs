@@ -29,6 +29,13 @@ public class GenericRepository <T> : IGenericRepository<T> where T : class
             .ToListAsync();
     }
 
+    public async Task<int> CountAsync(Expression<Func<T, bool>>? criteria = null)
+    {
+        if (criteria != null)
+            return await _context.Set<T>().CountAsync(criteria);
+
+        return await _context.Set<T>().CountAsync();
+    }
     public async Task<T> GetByIdAsync(object id)
     {
         return (await _context.Set<T>().FindAsync(id))!;

@@ -18,16 +18,14 @@ namespace ServiceRequestMS.Api.Controllers
         {
             _authService = authService;
         }
-
-        //[Authorize(Roles = nameof(UserRoles.Admin))]
         
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> Login(LoginDto request)
+        public async Task<IActionResult> Login(LoginDto request)
         {
             var token = await _authService.LoginAsync(request);
-            if (token == null)
+            if (!token.Success)
             {
-                return BadRequest("Wrong username or password");
+                return BadRequest(token);
             }
             return Ok(token);
         }
