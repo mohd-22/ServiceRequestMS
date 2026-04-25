@@ -23,7 +23,7 @@ public class CategoryController : ControllerBase
     {
         var result = await _categoryService.GetCategoryById(id);
         if (result.Success == false) {
-            return BadRequest(result);
+            return StatusCode(400,result);
         }
         else
         {

@@ -13,7 +13,7 @@ public interface IRequestService
     Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id);
     Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid id);
 
-    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber);
+    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize);
 
     //Delete if Request is new
     Task<ApiResponse<bool>> DeleteRequest(Guid Id);

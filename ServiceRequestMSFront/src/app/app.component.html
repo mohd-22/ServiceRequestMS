@@ -20,14 +20,19 @@
           <span class="menu-icon">C</span>
           <span class="menu-label" *ngIf="!isSidebarCollapsed">Categories</span>
         </a>
+        <a routerLink="/users" routerLinkActive="active" class="menu-link">
+          <span class="menu-icon">U</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">Users</span>
+        </a>
       </nav>
     </aside>
 
     <div class="main-wrap">
       <header class="topbar">
         <button type="button" class="toggle-btn" (click)="toggleSidebar()">Menu</button>
-        <div class="topbar-title">Admin Dashboard</div>
-        <button type="button" class="logout-btn ms-auto" (click)="logout()">Logout</button>
+        <div class="topbar-title"><span>{{ role }}</span> Dashboard</div>
+        <button type="button" class="profile-btn ms-auto" routerLink="/profile">Profile</button>
+        <button type="button" class="logout-btn" (click)="logout()">Logout</button>
       </header>
 
       <main class="content-area">

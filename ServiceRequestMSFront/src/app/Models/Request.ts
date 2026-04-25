@@ -137,6 +137,7 @@ export interface ApiResponse<T> {
     success: boolean;
     message: string;
     page: number;
+    totalPages?: number;
     data: T;
     errors?: string[] | null;
 }

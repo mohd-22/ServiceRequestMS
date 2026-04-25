@@ -10,8 +10,11 @@ import { AuthService } from './Services/auth.service';
 export class AppComponent {
   title = 'Service Request Management';
   isSidebarCollapsed = false;
+  role: string | null = null;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) {
+    this.role = authService.getUserRole();
+  }
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;

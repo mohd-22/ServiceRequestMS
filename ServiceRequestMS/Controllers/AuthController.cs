@@ -27,7 +27,7 @@ namespace ServiceRequestMS.Api.Controllers
             {
                 return BadRequest(token);
             }
-            return Ok(token);
+            return Ok(token.Data);
         }
     }
 }

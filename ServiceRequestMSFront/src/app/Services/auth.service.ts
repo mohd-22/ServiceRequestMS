@@ -19,18 +19,117 @@ export class AuthService {
   }
   getUserRole(): string | null {
     const token = this.getToken();
-    if (!token) return null;
+    console.log("Token in getUserRole:" + token);
+    if (!token){
+      console.log("No token found");
+      return null;
+    } 
+
+
 
     try {
       const decoded: any = jwtDecode(token);
+      console.log("HII");
+      return decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded['role'] ;
+    } catch (error) {
+      console.error('Error decoding token', error);
+      console.log("Error decoding token");
 
-     
-      return decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      return null;
+    }
+  }
+
+
+ getUserId(): string | null {
+    const token = this.getToken();
+    console.log("Token in getUserId:" + token);
+    if (!token){
+      console.log("No token found");
+      return null;
+    } 
+
+
+
+    try {
+      const decoded: any = jwtDecode(token);
+      console.log("HII");
+      return decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || decoded['nameidentifier'] ;
+    } catch (error) {
+      console.error('Error decoding token', error);
+      console.log("Error decoding token");
+
+      return null;
+    }
+  }
+
+  getUserName(): string | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded['sub'] || decoded['unique_name'] || null;
     } catch (error) {
       console.error('Error decoding token', error);
       return null;
     }
   }
+
+  getUserEmail(): string | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || decoded['email'] || null;
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
+  }
+
+  getFullName(): string | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded['FullName'] || decoded['fullName'] || decoded['name'] || null;
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
+  }
+
+  getTokenExpiry(): string | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      if (!decoded['exp']) {
+        return null;
+      }
+
+      const expiry = new Date(decoded['exp'] * 1000);
+      return expiry.toLocaleString();
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
+  }
+
+
+
+
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }

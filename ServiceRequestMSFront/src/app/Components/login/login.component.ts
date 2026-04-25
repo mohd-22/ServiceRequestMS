@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
 
       next: (token) => {
         const normalizedToken = (token || '').replace(/^"|"$/g, '').trim();
+        console.log("Token is Here:" + normalizedToken);
         this.authService.setToken(normalizedToken);
         this.isLoading = false;
         this.router.navigate(['/dashboard']);

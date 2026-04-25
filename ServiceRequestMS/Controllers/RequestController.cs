@@ -33,7 +33,7 @@ namespace ServiceRequestMS.Api.Controllers
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
-        [HttpGet("EmoReq/{Id}")]
+        [HttpGet("EmpReq/{Id}")]
         public async Task<ActionResult> GetRequestForEmployee(Guid Id)
         {
             var result = await _requestService.GetRequestsForEmployeeAsync(Id);
@@ -61,10 +61,10 @@ namespace ServiceRequestMS.Api.Controllers
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
-        [HttpGet("{page}")]
-        public async Task<ActionResult> GetPagedRequest(int page)
+        [HttpGet("{page}/{pageSize}")]
+        public async Task<ActionResult> GetPagedRequest(int page, int pageSize)
         {
-            var result = await _requestService.GetPagedRequests(page);
+            var result = await _requestService.GetPagedRequests(page, pageSize);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
