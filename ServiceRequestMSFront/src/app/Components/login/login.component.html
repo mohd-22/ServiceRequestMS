@@ -1,0 +1,77 @@
+<section class="login-page">
+  <div class="login-backdrop" style="top:-70px;left:-60px;width:280px;height:280px;background:rgba(23, 162, 184, 0.24);"></div>
+  <div class="login-backdrop" style="right:-120px;bottom:-140px;width:360px;height:360px;background:rgba(255, 255, 255, 0.14);"></div>
+
+  <div class="login-shell">
+    <aside class="promo-panel">
+      <div class="promo-badge">ServiceRequestMS</div>
+      <h1>Sign in to manage requests with clarity.</h1>
+      <p>
+        Track service requests, category flows, and staff assignments from one clean dashboard.
+      </p>
+
+      <div class="promo-points">
+      
+        <div class="promo-point">
+          <span class="point-icon">01</span>
+          <span>Fast navigation to requests, categories, and the dashboard.</span>
+        </div>
+        <div class="promo-point">
+          <span class="point-icon">02</span>
+          <span>Modern service desk layout built for daily operations.</span>
+        </div>
+      </div>
+    </aside>
+
+    <section class="login-card">
+      <div class="card-header">
+        <div class="card-mark">SR</div>
+        <div>
+          <p class="eyebrow">Welcome back</p>
+          <h2>Admin sign in</h2>
+        </div>
+      </div>
+
+      <form class="login-form" #loginForm="ngForm" (ngSubmit)="submitLogin()" novalidate>
+        <label class="field-label" for="userName">User name</label>
+        <div class="input-wrap">
+          <input
+            id="userName"
+            name="userName"
+            [(ngModel)]="credentials.userName"
+            type="text"
+            class="field-input"
+            placeholder="Enter your user name"
+            autocomplete="username"
+            required />
+        </div>
+
+        <label class="field-label" for="password">Password</label>
+        <div class="input-wrap password-wrap">
+          <input
+            id="password"
+            name="password"
+            [(ngModel)]="credentials.password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="field-input"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required />
+          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="isLoading || loginForm.invalid">
+          <span *ngIf="!isLoading">Sign in</span>
+          <span *ngIf="isLoading">Signing in...</span>
+        </button>
+
+        <p class="status-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </form>
+    </section>
+  </div>
+</section>

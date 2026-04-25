@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ServiceRequestMS.Application.DTOs;
+using ServiceRequestMS.core.Models;
 using ServiceRequestMS.Core.Models;
 
 
@@ -41,5 +42,7 @@ public class MappingProfile : Profile
     .ForMember(dest => dest.Id, opt => opt.Ignore())
     .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
     .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
+
+        CreateMap<User, UserDto>().ReverseMap();
     }
 }

@@ -1,0 +1,70 @@
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header-card,
+.details-card {
+  background: #ffffff;
+  border: 1px solid #d9e8ef;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(22, 71, 99, 0.08);
+}
+
+.header-card {
+  padding: 20px;
+}
+
+.details-card {
+  padding: 8px 20px;
+}
+
+.page-title {
+  margin: 0;
+  color: #13394d;
+}
+
+.page-subtitle {
+  margin: 6px 0 0;
+  color: #456176;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e7eff4;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #4c6578;
+  font-weight: 600;
+}
+
+.detail-value {
+  color: #153b4f;
+  font-weight: 700;
+  text-align: right;
+}
+
+.detail-value.code {
+  font-family: Consolas, 'Courier New', monospace;
+  word-break: break-all;
+}
+
+@media (max-width: 768px) {
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-value {
+    text-align: left;
+  }
+}

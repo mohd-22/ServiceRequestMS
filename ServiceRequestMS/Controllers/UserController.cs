@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.DTOs;
+using ServiceRequestMS.Application.Services;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.core.Models.Enums;
@@ -20,7 +21,7 @@ namespace ServiceRequestMS.Api.Controllers
             _userService = userService;
         }
 
-        //[Authorize(Roles = nameof(UserRoles.Admin))]
+        [Authorize(Roles = nameof(UserRoles.Admin))]
         [HttpPost("DeactiveUser/{userId}")]
         public async Task<ActionResult> DeactivateUser(Guid userId)
         {
@@ -58,7 +59,7 @@ namespace ServiceRequestMS.Api.Controllers
         }
 
 
-        [Authorize(Roles = nameof(UserRoles.Admin))]
+        [Authorize(Roles = $"{nameof(UserRoles.Admin)},{nameof(UserRoles.Manager)}")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult> GetAllUsers()
         {
@@ -71,6 +72,7 @@ namespace ServiceRequestMS.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = nameof(UserRoles.Admin))]
         [HttpPost("AddUser")]
         public async Task<ActionResult<User>> Register(UserRegistraionDto request)
         {
@@ -83,7 +85,13 @@ namespace ServiceRequestMS.Api.Controllers
             }
             return Ok(result);
         }
-       
 
+        [HttpGet("PagedUser/{page}/{pageSize}")]
+        public async Task<ActionResult> GetPagedUsers(int page, int pageSize)
+        {
+            var result = await _userService.GetPagedUsers(page, pageSize);
+            if (result.Success == false) return BadRequest(result);
+            return Ok(result);
+        }
     }
 }

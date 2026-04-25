@@ -11,6 +11,8 @@ public interface IUserService
     //Read
     Task<ApiResponse<IEnumerable<UserDto>>> GetAllUsersAsync();
     Task<ApiResponse<UserDto>> GetUserByIdAsync(Guid id);
+    Task<ApiResponse<IEnumerable<UserDto>>> GetPagedUsers(int pageNumber, int pageSize);
+
     //Soft Delete
     Task<ApiResponse<bool>> ActivateUserAsync(Guid id);
     Task<ApiResponse<bool>> DeactivateUserAsync(Guid id);

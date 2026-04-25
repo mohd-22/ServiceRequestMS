@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ServiceRequestMS.Application.Common;
+using AutoMapper;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
@@ -13,8 +14,13 @@ namespace ServiceRequestMS.Application.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
         public async Task<ApiResponse<bool>> ActivateUserAsync(Guid id)
         {
@@ -56,6 +62,53 @@ namespace ServiceRequestMS.Application.Services
 
         }
 
+        public async Task<ApiResponse<IEnumerable<UserDto>>> GetPagedUsers(int pageNumber, int pageSize)
+        {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            if (pageSize <= 0)
+            {
+                pageSize = 5;
+            }
+
+            if (_unitOfWork.Users == null)
+                return ApiResponse<IEnumerable<UserDto>>.FailureResponse("System error: User repository is not initialized.");
+
+
+            var totalUsers = await _unitOfWork.Users.CountAsync();
+
+            if (totalUsers == 0)
+                return ApiResponse<IEnumerable<UserDto>>.SuccessResponse(Enumerable.Empty<UserDto>(), "No Users found.");
+
+
+            var totalPages = (int)Math.Ceiling(totalUsers / (double)pageSize);
+
+            if (pageNumber > totalPages)
+            {
+                return ApiResponse<IEnumerable<UserDto>>.SuccessResponseForPaages(
+                    Enumerable.Empty<UserDto>(),
+                    pageNumber,
+                    "No users found for this page.",
+                    totalPages
+                );
+            }
+
+
+            var users = await _unitOfWork.Users.GetPagedUsers(pageNumber, pageSize);
+
+
+            var mappedUsers = _mapper.Map<IEnumerable<UserDto>>(users);
+
+            return ApiResponse<IEnumerable<UserDto>>.SuccessResponseForPaages(
+                mappedUsers,
+                pageNumber,
+                "Users Retrieved Successfully",
+                totalPages
+            );
+        }
 
         private async Task<bool> HandleStaffDeactivation(Guid staffId)
         {
@@ -94,8 +147,8 @@ namespace ServiceRequestMS.Application.Services
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Role = user.Role.ToString(),
-
-                IsActive = user.IsActive
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedDate
             });
 
             return ApiResponse<IEnumerable<UserDto>>.SuccessResponse(userDtos,"Users Retrieved Succesfully");
@@ -124,7 +177,8 @@ namespace ServiceRequestMS.Application.Services
                     Title = req.Title,
                     Status = req.Status
                 }),
-                IsActive = user.IsActive
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedDate
             };
 
             return ApiResponse<UserDto>.SuccessResponse(userDto, "User Retrieved Succesfully");
@@ -140,6 +194,7 @@ namespace ServiceRequestMS.Application.Services
             var user = new User();
             var hashedPassword = new PasswordHasher<User>().
             HashPassword(user, request.Password);
+            user.CreatedDate = DateTime.UtcNow;
             user.FullName = request.FullName;
             user.UserName = request.UserName;
             user.PasswordHash = hashedPassword;

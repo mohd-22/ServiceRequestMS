@@ -6,4 +6,5 @@ public interface IRequestRepository : IGenericRepository<Request>
     Task<IEnumerable<Request>> GetAllWithDetailsAsync();
     Task<IEnumerable<Request>> GetRequestsByEmpIdAsync(Guid userId);
     Task<IEnumerable<Request>> GetRequestsByStaffIdAsync(Guid userId);
+    Task<IEnumerable<Request>> GetPagedRequests(int pageNumber, int pageSize);
 }

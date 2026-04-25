@@ -17,7 +17,7 @@ namespace ServiceRequestMS.Api.Controllers
         {
             _requestService = requestService;
         }
-        //[Authorize]
+        [Authorize] 
         [HttpPost("CreateRequest")]
         public async Task<ActionResult> CreateRequest(CreateRequestDto dto)
         {
@@ -33,7 +33,7 @@ namespace ServiceRequestMS.Api.Controllers
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
-        [HttpGet("EmoReq/{Id}")]
+        [HttpGet("EmpReq/{Id}")]
         public async Task<ActionResult> GetRequestForEmployee(Guid Id)
         {
             var result = await _requestService.GetRequestsForEmployeeAsync(Id);
@@ -58,6 +58,13 @@ namespace ServiceRequestMS.Api.Controllers
         public async Task<ActionResult> UpdateRequest(UpdateEmployeeRequestDto dto)
         {
             var result = await _requestService.UpdateRequest(dto);
+            if (result.Success == false) return BadRequest(result);
+            return Ok(result);
+        }
+        [HttpGet("{page}/{pageSize}")]
+        public async Task<ActionResult> GetPagedRequest(int page, int pageSize)
+        {
+            var result = await _requestService.GetPagedRequests(page, pageSize);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }

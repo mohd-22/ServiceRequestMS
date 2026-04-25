@@ -1,0 +1,17 @@
+.home-wrap {
+  background: #ffffff;
+  border: 1px solid #d9e8ef;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(22, 71, 99, 0.08);
+  padding: 20px;
+}
+
+.home-wrap h1 {
+  margin: 0 0 8px;
+  color: #13394d;
+}
+
+.home-wrap p {
+  margin: 0;
+  color: #456176;
+}

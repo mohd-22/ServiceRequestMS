@@ -40,5 +40,19 @@ namespace ServiceRequestMS.Data.Repositories
                     .AsNoTracking()
                     .ToListAsync();
         }
+
+        public async Task<IEnumerable<Request>> GetPagedRequests(int pageNumber, int pageSize)
+        {
+            return await _context.Requests
+                .Include(r => r.Requester)
+                .Include(r => r.AssignedStaff)
+                .Include(r => r.CategoryItem)
+                    .ThenInclude(ci => ci.Category)
+                .OrderByDescending(r => r.CreatedDate)
+                .Skip((pageNumber - 1) * pageSize) 
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

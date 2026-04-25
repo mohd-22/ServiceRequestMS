@@ -1,0 +1,169 @@
+<section class="users-page">
+	<header class="header-card">
+		<h1 class="page-title">Users</h1>
+		<p class="page-subtitle"><span>{{ role }}</span> view for all registered users.</p>
+	</header>
+
+	<section class="table-card">
+		<div class="table-header-row">
+			<h2 class="table-title">Users List</h2>
+			<div class="table-actions">
+				<span class="count-pill">{{ getDisplayedUserCount() }} total</span>
+				<button *ngIf="canAddUser()" type="button" class="btn btn-primary btn-sm" (click)="openAddUserForm()">Add User</button>
+			</div>
+		</div>
+
+		<section class="add-user-panel" *ngIf="isAddingUser && canAddUser()">
+			<h3 class="add-user-title">Add New User</h3>
+			<div *ngIf="addUserErrorMessage" class="state-box state-error">{{ addUserErrorMessage }}</div>
+			<form class="row g-3" (ngSubmit)="submitAddUser()" #addUserForm="ngForm">
+				<div class="col-md-6">
+					<label class="form-label" for="fullName">Full Name</label>
+					<input
+						id="fullName"
+						type="text"
+						class="form-control"
+						name="fullName"
+						[(ngModel)]="newUser.fullName"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="userName">User Name</label>
+					<input
+						id="userName"
+						type="text"
+						class="form-control"
+						name="userName"
+						[(ngModel)]="newUser.userName"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="email">Email</label>
+					<input
+						id="email"
+						type="email"
+						class="form-control"
+						name="email"
+						[(ngModel)]="newUser.email"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="phoneNumber">Phone Number</label>
+					<input
+						id="phoneNumber"
+						type="text"
+						class="form-control"
+						name="phoneNumber"
+						[(ngModel)]="newUser.phoneNumber"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="role">Role</label>
+					<select
+						id="role"
+						class="form-select"
+						name="role"
+						[(ngModel)]="newUser.role"
+						required>
+						<option *ngFor="let option of roleOptions" [ngValue]="option.value">{{ option.label }}</option>
+					</select>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="password">Password</label>
+					<input
+						id="password"
+						type="password"
+						class="form-control"
+						name="password"
+						[(ngModel)]="newUser.password"
+						required>
+				</div>
+
+				<div class="col-12 form-actions">
+					<button
+						type="submit"
+						class="btn btn-primary"
+						[disabled]="addUserForm.invalid || isSubmittingAddUser">
+						{{ isSubmittingAddUser ? 'Saving...' : 'Save User' }}
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-secondary"
+						[disabled]="isSubmittingAddUser"
+						(click)="closeAddUserForm()">
+						Cancel
+					</button>
+				</div>
+			</form>
+		</section>
+
+		<div *ngIf="isLoading" class="state-box state-loading">Loading users...</div>
+		<div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
+		<div *ngIf="!isLoading && !errorMessage && displayedUsers.length === 0" class="state-box state-empty">
+			No users found.
+		</div>
+
+		<div class="table-responsive" *ngIf="!isLoading && !errorMessage && displayedUsers.length > 0">
+			<table class="table align-middle custom-table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Full Name</th>
+						<th>User Name</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Role</th>
+						<th>Status</th>
+                        <th *ngIf="canAddUser()">Action</th>
+                        <th>Created</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let user of displayedUsers; let i = index">
+						<td>{{ i + 1 }}</td>
+						<td class="fw-semibold">{{ user.fullName }}</td>
+						<td>{{ user.userName }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.phoneNumber || '-' }}</td>
+						<td>{{ user.role }}</td>
+						<td><span [class]="getStatusClass(user.isActive)">{{ user.isActive ? 'Active' : 'Inactive' }}</span></td>
+						<td *ngIf="canManageUserStatus()">
+							<button
+								type="button"
+								class="btn btn-sm"
+								[ngClass]="user.isActive ? 'btn-outline-danger' : 'btn-outline-success'"
+								[disabled]="!canManageUserStatus() || isUserActionLoading(user.id)"
+								(click)="toggleUserStatus(user)">
+								{{ !canManageUserStatus() ? 'Admin only' : (isUserActionLoading(user.id) ? 'Saving...' : (user.isActive ? 'Deactivate' : 'Activate')) }}
+							</button>
+						</td>
+						<td>{{ formatDate(user.createdAt) }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="pagination-row" *ngIf="!isLoading && !errorMessage && totalPages > 1">
+			<button
+				type="button"
+				class="btn btn-sm btn-outline-secondary"
+				(click)="goToPreviousPage()"
+				[disabled]="currentPage <= 1">
+				Previous
+			</button>
+			<span class="page-indicator">Page {{ currentPage }} / {{ totalPages }}</span>
+			<button
+				type="button"
+				class="btn btn-sm btn-outline-secondary"
+				(click)="goToNextPage()"
+				[disabled]="currentPage >= totalPages">
+				Next
+			</button>
+		</div>
+	</section>
+</section>

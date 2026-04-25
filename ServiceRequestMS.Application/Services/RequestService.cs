@@ -55,7 +55,7 @@ public class RequestService : IRequestService
 
         if(requests.Any() == false)
         {
-            return ApiResponse<IEnumerable<RequestForEmployeeDto>>.FailureResponse("Employee has no Requests");
+            return ApiResponse<IEnumerable<RequestForEmployeeDto>>.SuccessResponse([],"Employee has no Requests");
         }
 
         return ApiResponse<IEnumerable<RequestForEmployeeDto>>.SuccessResponse(_mapper.Map<IEnumerable<RequestForEmployeeDto>>(requests), "Requests Retrieved Succesfully");
@@ -73,7 +73,7 @@ public class RequestService : IRequestService
         var requests = await _unitOfWork.Requests.GetRequestsByStaffIdAsync(Id);
         if (requests.Any() == false)
         {
-            return ApiResponse<IEnumerable<RequestForStaffDto>>.FailureResponse("Staff has no Requests assigned to him");
+            return ApiResponse<IEnumerable<RequestForStaffDto>>.SuccessResponse([], "Staff has no Requests assigned to him");
         }
 
         return ApiResponse<IEnumerable<RequestForStaffDto>>.SuccessResponse(_mapper.Map<IEnumerable<RequestForStaffDto>>(requests), "Requests Retrieved Succesfully");
@@ -111,4 +111,51 @@ public class RequestService : IRequestService
         return ApiResponse<bool>.SuccessResponse(true, "Request Updated Succesfully");
     }
 
+    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize)
+    {
+        if (pageNumber < 1)
+        {
+            pageNumber = 1;
+        }
+
+        if (pageSize <= 0)
+        {
+            pageSize = 5;
+        }
+
+        if (_unitOfWork.Requests == null)
+            return ApiResponse<IEnumerable<RequestAdminDto>>.FailureResponse("System error: Request repository is not initialized.");
+
+      
+        var totalRequests = await _unitOfWork.Requests.CountAsync();
+
+        if (totalRequests == 0)
+            return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponse(Enumerable.Empty<RequestAdminDto>(), "No requests found.");
+
+       
+        var totalPages = (int)Math.Ceiling(totalRequests / (double)pageSize);
+
+        if (pageNumber > totalPages)
+        {
+            return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponseForPaages(
+                Enumerable.Empty<RequestAdminDto>(),
+                pageNumber,
+                "No requests found for this page.",
+                totalPages
+            );
+        }
+
+       
+        var requests = await _unitOfWork.Requests.GetPagedRequests(pageNumber, pageSize);
+
+      
+        var mappedRequests = _mapper.Map<IEnumerable<RequestAdminDto>>(requests);
+
+        return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponseForPaages(
+            mappedRequests,
+            pageNumber,
+            "Requests Retrieved Successfully",
+            totalPages
+        );
+    }
 }

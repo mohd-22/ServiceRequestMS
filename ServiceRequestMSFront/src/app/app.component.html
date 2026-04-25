@@ -1,0 +1,47 @@
+<ng-container *ngIf="!isAuthRoute(); else authLayout">
+  <div class="dashboard-shell">
+    <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+      <div class="brand-block">
+        <div class="brand-logo">SR</div>
+        <div class="brand-text" *ngIf="!isSidebarCollapsed">ServiceRequestMS</div>
+      </div>
+
+      <nav class="menu">
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="menu-link">
+          <span class="menu-icon">D</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">Dashboard</span>
+        </a>
+
+        <a routerLink="/requests" routerLinkActive="active" class="menu-link">
+          <span class="menu-icon">R</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">Requests</span>
+        </a>
+        <a routerLink="/categories" routerLinkActive="active" class="menu-link">
+          <span class="menu-icon">C</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">Categories</span>
+        </a>
+        <a routerLink="/users" routerLinkActive="active" class="menu-link">
+          <span class="menu-icon">U</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">Users</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="toggle-btn" (click)="toggleSidebar()">Menu</button>
+        <div class="topbar-title"><span>{{ role }}</span> Dashboard</div>
+        <button type="button" class="profile-btn ms-auto" routerLink="/profile">Profile</button>
+        <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+      </header>
+
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #authLayout>
+  <router-outlet></router-outlet>
+</ng-template>

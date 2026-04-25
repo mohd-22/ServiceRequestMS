@@ -1,0 +1,222 @@
+<section class="requests-page">
+  <header class="header-card">
+    <h1 class="page-title">Requests Dashboard</h1>
+    <p class="page-subtitle"><span>{{ role }}</span> view for all service requests.</p>
+  </header>
+
+  <section class="table-card">
+    <div class="table-header-row">
+      <h2 class="table-title">Requests</h2>
+      <span class="request-count">{{ requests.length }} total</span>
+      <div class="table-actions">
+        <button
+          *ngIf="canAddRequest() && !isAddingRequest"
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="openAddRequestForm()">
+          Add New Request
+        </button>
+      </div>
+    </div>
+
+    <section class="add-request-panel" *ngIf="isAddingRequest && canAddRequest()">
+      <h3 class="add-request-title">Add New Request</h3>
+      <div *ngIf="addRequestErrorMessage" class="state-box state-error">{{ addRequestErrorMessage }}</div>
+      <form class="row g-3" (ngSubmit)="submitAddRequest()" #addRequestForm="ngForm">
+        <div class="col-12 col-md-6">
+          <label for="requestTitle" class="form-label">Title</label>
+          <input
+            id="requestTitle"
+            name="requestTitle"
+            type="text"
+            class="form-control"
+            maxlength="120"
+            required
+            [(ngModel)]="newRequest.title">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label for="requestCategory" class="form-label">Category</label>
+          <select
+            id="requestCategory"
+            name="requestCategory"
+            class="form-select"
+            required
+            [disabled]="isLoadingCategories"
+            [(ngModel)]="selectedCategoryId"
+            (ngModelChange)="onCategoryChange()">
+            <option value="">Select category</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label for="requestDescription" class="form-label">Description</label>
+          <textarea
+            id="requestDescription"
+            name="requestDescription"
+            class="form-control"
+            rows="3"
+            required
+            [(ngModel)]="newRequest.description"></textarea>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label for="requestItem" class="form-label">Item</label>
+          <select
+            id="requestItem"
+            name="requestItem"
+            class="form-select"
+            required
+            [disabled]="!selectedCategoryId || isLoadingCategories"
+            [(ngModel)]="newRequest.categoryItemId">
+            <option value="">Select item</option>
+            <option *ngFor="let item of categoryItems" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="addRequestForm.invalid || isSubmittingAddRequest">
+            {{ isSubmittingAddRequest ? 'Saving...' : 'Save Request' }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary" [disabled]="isSubmittingAddRequest" (click)="closeAddRequestForm()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <div *ngIf="addRequestSuccessMessage" class="state-box state-loading">{{ addRequestSuccessMessage }}</div>
+
+    <div *ngIf="isLoadingStaff" class="state-box state-loading">Loading staff users...</div>
+    <div *ngIf="!isLoadingStaff && staffErrorMessage" class="state-box state-error">{{ staffErrorMessage }}</div>
+
+    <div *ngIf="isLoading" class="state-box state-loading">Loading requests...</div>
+    <div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
+    <div *ngIf="!isLoading && !errorMessage && requests.length === 0" class="state-box state-empty">
+      No requests found.
+    </div>
+
+    <div class="pagination-row" *ngIf="canUsePaging() && !isLoading">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary"
+        (click)="goToPreviousPage()"
+        [disabled]="currentPage <= 1">
+        Previous
+      </button>
+      <span class="page-indicator">Page {{ currentPage }} / {{ totalPages }}</span>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary"
+        (click)="goToNextPage()"
+        [disabled]="currentPage >= totalPages">
+        Next
+      </button>
+    </div>
+
+    <div class="table-responsive" *ngIf="!isLoading && !errorMessage && requests.length > 0">
+      <table class="table align-middle custom-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th *ngIf=" role == 'Admin' || role === 'Manager'"> RequseterId</th>
+            <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">Requester</th>
+            <th *ngIf="role === 'Staff'">Requester Phone</th>
+            <th *ngIf=" role == 'Admin' || role === 'Manager' "> StaffId</th>
+            <th *ngIf=" role !== 'Staff'">Assigned Staff</th>
+            <th *ngIf="role === 'Manager'">Assign</th>
+            <th *ngIf="role === 'Staff'">Change Status</th>
+            <th>Category</th>
+            <th>Item</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>
+              <div class="fw-semibold">{{ request.title }}</div>
+              <div class="text-muted small">{{ request.description }}</div>
+            </td>
+            <td>
+              <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
+            </td>
+            <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.requesterId }}</td>
+            <td *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">{{ request.requesterName }}</td>
+            <td *ngIf="role === 'Staff'">{{ request.requesterPhone }}</td>
+            <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.assignedStaffId }}</td>
+              <td *ngIf="role !== 'Staff'">{{ request.assignedStaffName || 'Unassigned' }}</td>
+            <td *ngIf="role === 'Manager'">
+              <div *ngIf="canAssignRequest(request); else assignedOrBlocked">
+                <select
+                  class="form-select form-select-sm mb-2"
+                  [(ngModel)]="selectedStaffByRequestId[request.id]"
+                  [name]="'staff-' + request.id">
+                  <option value="">Select staff</option>
+                  <option *ngFor="let staff of staffUsers" [value]="staff.id">
+                    {{ staff.fullName }} ({{ staff.userName }})
+                  </option>
+                </select>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-primary"
+                  [disabled]="!selectedStaffByRequestId[request.id] || isAssignLoading(request.id)"
+                  (click)="assignStaff(request)">
+                  {{ isAssignLoading(request.id) ? 'Assigning...' : 'Assign' }}
+                </button>
+              </div>
+              <ng-template #assignedOrBlocked>
+                <span class="text-muted small">Not assignable</span>
+              </ng-template>
+            </td>
+            <td *ngIf="role === 'Staff'">
+              <div *ngIf="canChangeStaffStatus(request); else noStatusAction">
+                <select
+                  class="form-select form-select-sm mb-2"
+                  [(ngModel)]="selectedNextStatusByRequestId[request.id]"
+                  [name]="'status-' + request.id">
+                  <option value="">Select status</option>
+                  <option *ngFor="let option of getStaffStatusOptions(request)" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+                <textarea
+                  *ngIf="selectedNextStatusByRequestId[request.id] === 'Rejected'"
+                  class="form-control form-control-sm mb-2"
+                  rows="2"
+                  placeholder="Rejection note (optional)"
+                  [(ngModel)]="selectedNextStatusByRequestId[request.id + '-notes']"
+                  [name]="'notes-' + request.id"></textarea>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-primary"
+                  [disabled]="!selectedNextStatusByRequestId[request.id] || isStatusLoading(request.id)"
+                  (click)="changeStaffStatus(request)">
+                  {{ isStatusLoading(request.id) ? 'Updating...' : 'Update' }}
+                </button>
+              </div>
+              <ng-template #noStatusAction>
+                <span class="text-muted small">No action available</span>
+              </ng-template>
+            </td>
+            <td>
+              <a
+                class="category-link"
+                [routerLink]="['/categories']"
+                [queryParams]="{ categoryId: request.categoryId }">
+                {{ request.categoryName }}
+              </a>
+            </td>
+            <td>{{ request.itemName }}</td>
+            <td>{{ formatDate(request.createdDate) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
