@@ -9,11 +9,11 @@ public interface IRequestService
     Task<ApiResponse<CreateRequestDto>> CreateRequest(CreateRequestDto ReqDto);
 
     //Read 
-    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync();
-    Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id);
-    Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid id);
+    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync(string? sortBy = null, string sortOrder = "desc");
+    Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id, string? sortBy = null, string sortOrder = "desc");
+    Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid id, string? sortBy = null, string sortOrder = "desc");
 
-    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize);
+    Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize, string? sortBy = null, string sortOrder = "desc");
 
     //Delete if Request is new
     Task<ApiResponse<bool>> DeleteRequest(Guid Id);

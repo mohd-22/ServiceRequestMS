@@ -7,7 +7,10 @@
 	<section class="table-card">
 		<div class="table-header-row">
 			<h2 class="table-title">Categories List</h2>
-			<span class="count-pill">{{ categories.length }} total</span>
+			<div class="table-actions">
+				<span class="count-pill">{{ categories.length }} total</span>
+				<button *ngIf="canAddCategory()" type="button" class="btn btn-primary btn-sm" (click)="openAddCategoryForm()">Add Category</button>
+			</div>
 		</div>
 
 		<div *ngIf="isLoading" class="state-box state-loading">Loading categories...</div>
@@ -24,6 +27,7 @@
 						<th>Name</th>
 						<th>Description</th>
 						<th>Id</th>
+						<th *ngIf="canAddCategory()">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,14 +39,89 @@
 						<td class="fw-semibold">{{ category.name }}</td>
 						<td>{{ category.description || '-' }}</td>
 						<td><small class="text-muted">{{ category.id }}</small></td>
+						<td *ngIf="canAddCategory()">
+							<button type="button" class="btn btn-warning btn-sm me-1 m-2" (click)="openEditCategoryForm(category); $event.stopPropagation()">Edit</button>
+							<button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category); $event.stopPropagation()">Delete</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
+		<section class="add-category-panel" *ngIf="isAddingCategory && canAddCategory()">
+			<h3 class="add-category-title">Add New Category</h3>
+			<div *ngIf="addCategoryErrorMessage" class="state-box state-error">{{ addCategoryErrorMessage }}</div>
+			<form class="row g-3" (ngSubmit)="submitAddCategory()" #addCategoryForm="ngForm">
+				<div class="col-md-6">
+					<label class="form-label" for="name">Name</label>
+					<input
+						id="name"
+						type="text"
+						class="form-control"
+						name="name"
+						[(ngModel)]="newCategory.name"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="description">Description</label>
+					<input
+						id="description"
+						type="text"
+						class="form-control"
+						name="description"
+						[(ngModel)]="newCategory.description">
+				</div>
+
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary" [disabled]="isSubmittingAddCategory">
+						{{ isSubmittingAddCategory ? 'Adding...' : 'Add Category' }}
+					</button>
+					<button type="button" class="btn btn-secondary ms-2" (click)="closeAddCategoryForm()">Cancel</button>
+				</div>
+			</form>
+		</section>
+
+		<section class="edit-category-panel" *ngIf="isEditingCategory && canAddCategory()">
+			<h3 class="edit-category-title">Edit Category</h3>
+			<div *ngIf="editCategoryErrorMessage" class="state-box state-error">{{ editCategoryErrorMessage }}</div>
+			<form class="row g-3" (ngSubmit)="submitEditCategory()" #editCategoryForm="ngForm">
+				<div class="col-md-6">
+					<label class="form-label" for="editName">Name</label>
+					<input
+						id="editName"
+						type="text"
+						class="form-control"
+						name="name"
+						[(ngModel)]="editingCategory.name"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="editDescription">Description</label>
+					<input
+						id="editDescription"
+						type="text"
+						class="form-control"
+						name="description"
+						[(ngModel)]="editingCategory.description">
+				</div>
+
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary" [disabled]="isSubmittingEditCategory">
+						{{ isSubmittingEditCategory ? 'Updating...' : 'Update Category' }}
+					</button>
+					<button type="button" class="btn btn-secondary ms-2" (click)="closeEditCategoryForm()">Cancel</button>
+				</div>
+			</form>
+		</section>
+
 		<section class="items-panel" *ngIf="selectedCategoryId">
-			<div class="items-header">
+			<div class="items-header-row">
 				<h3 class="items-title">Items For Selected Category</h3>
+				<div class="items-actions">
+					<button *ngIf="canAddItem()" type="button" class="btn btn-primary btn-sm" (click)="openAddItemForm()">Add Item</button>
+				</div>
 			</div>
 
 			<div *ngIf="isLoadingItems" class="state-box state-loading">Loading items...</div>
@@ -61,6 +140,7 @@
 							<th>#</th>
 							<th>Item Name</th>
 							<th>Description</th>
+							<th *ngIf="canAddItem()">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -68,10 +148,82 @@
 							<td>{{ idx + 1 }}</td>
 							<td class="fw-semibold">{{ item.name }}</td>
 							<td>{{ item.description || '-' }}</td>
+							<td *ngIf="canAddItem()">
+								<button type="button" class="btn btn-warning btn-sm me-1" (click)="openEditItemForm(item)">Edit</button>
+								<button type="button" class="btn btn-danger btn-sm" (click)="deleteItem(item)">Delete</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+
+			<section class="add-item-panel" *ngIf="isAddingItem && canAddItem()">
+				<h4 class="add-item-title">Add New Item</h4>
+				<div *ngIf="addItemErrorMessage" class="state-box state-error">{{ addItemErrorMessage }}</div>
+				<form class="row g-3" (ngSubmit)="submitAddItem()" #addItemForm="ngForm">
+					<div class="col-md-6">
+						<label class="form-label" for="itemName">Name</label>
+						<input
+							id="itemName"
+							type="text"
+							class="form-control"
+							name="name"
+							[(ngModel)]="newItem.name"
+							required>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-label" for="itemDescription">Description</label>
+						<input
+							id="itemDescription"
+							type="text"
+							class="form-control"
+							name="description"
+							[(ngModel)]="newItem.description">
+					</div>
+
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary" [disabled]="isSubmittingAddItem">
+							{{ isSubmittingAddItem ? 'Adding...' : 'Add Item' }}
+						</button>
+						<button type="button" class="btn btn-secondary ms-2" (click)="closeAddItemForm()">Cancel</button>
+					</div>
+				</form>
+			</section>
+
+			<section class="edit-item-panel" *ngIf="isEditingItem && canAddItem()">
+				<h4 class="edit-item-title">Edit Item</h4>
+				<div *ngIf="editItemErrorMessage" class="state-box state-error">{{ editItemErrorMessage }}</div>
+				<form class="row g-3" (ngSubmit)="submitEditItem()" #editItemForm="ngForm">
+					<div class="col-md-6">
+						<label class="form-label" for="editItemName">Name</label>
+						<input
+							id="editItemName"
+							type="text"
+							class="form-control"
+							name="name"
+							[(ngModel)]="editingItem.name"
+							required>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-label" for="editItemDescription">Description</label>
+						<input
+							id="editItemDescription"
+							type="text"
+							class="form-control"
+							name="description"
+							[(ngModel)]="editingItem.description">
+					</div>
+
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary" [disabled]="isSubmittingEditItem">
+							{{ isSubmittingEditItem ? 'Updating...' : 'Update Item' }}
+						</button>
+						<button type="button" class="btn btn-secondary ms-2" (click)="closeEditItemForm()">Cancel</button>
+					</div>
+				</form>
+			</section>
 		</section>
 	</section>
 </section>

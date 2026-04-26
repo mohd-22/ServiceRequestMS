@@ -6,6 +6,7 @@ import { RequestsComponent } from './Components/requests/requests.component';
 import { CategoriesComponent } from './Components/categories/categories.component';
 import { UsersComponent } from './Components/users/users.component';
 import { ProfileComponent } from './Components/profile/profile.component';
+import { AdminGuard } from './Services/admin.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },

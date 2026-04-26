@@ -18,17 +18,43 @@ export class RequestService {
       .pipe(map((response) => response.data ?? []));
   }
 
-  getPagedRequests(page: number, pageSize: number = 5): Observable<ApiResponse<RequestAdminDto[]>> {
-    return this.http.get<ApiResponse<RequestAdminDto[]>>(`${environment.apiUrl}/${this.apiUrl}/${page}/${pageSize}`);
+  getPagedRequests(page: number, pageSize: number = 5, sortBy: string = 'createdDate', sortOrder: string = 'desc'): Observable<ApiResponse<RequestAdminDto[]>> {
+    return this.http.get<ApiResponse<RequestAdminDto[]>>(
+      `${environment.apiUrl}/${this.apiUrl}/${page}/${pageSize}`,
+      {
+        params: {
+          sortBy,
+          sortOrder
+        }
+      }
+    );
   }
-  getRequestsForEmployee(id : string | null): Observable<RequestForEmployeeDto[]> {
+
+  getRequestsForEmployee(id : string | null, sortBy: string = 'createdDate', sortOrder: string = 'desc'): Observable<RequestForEmployeeDto[]> {
     return this.http
-      .get<ApiResponse<RequestForEmployeeDto[]>>(`${environment.apiUrl}/${this.apiUrl}/EmpReq/${id}`)
+      .get<ApiResponse<RequestForEmployeeDto[]>>(
+        `${environment.apiUrl}/${this.apiUrl}/EmpReq/${id}`,
+        {
+          params: {
+            sortBy,
+            sortOrder
+          }
+        }
+      )
       .pipe(map((response) => response.data ?? []));
   }
-  getRequestsForStaff(id : string | null): Observable<RequestForStaffDto[]> {
+
+  getRequestsForStaff(id : string | null, sortBy: string = 'createdDate', sortOrder: string = 'desc'): Observable<RequestForStaffDto[]> {
     return this.http
-      .get<ApiResponse<RequestForStaffDto[]>>(`${environment.apiUrl}/${this.apiUrl}/StaffReq/${id}`)
+      .get<ApiResponse<RequestForStaffDto[]>>(
+        `${environment.apiUrl}/${this.apiUrl}/StaffReq/${id}`,
+        {
+          params: {
+            sortBy,
+            sortOrder
+          }
+        }
+      )
       .pipe(map((response) => response.data ?? []));
   }
 

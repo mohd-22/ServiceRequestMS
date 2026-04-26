@@ -27,6 +27,8 @@ export class RequestsComponent {
   currentPage = 1;
   totalPages = 1;
   readonly pageSize = 5;
+  sortBy = 'createdDate';
+  sortOrder: 'asc' | 'desc' = 'desc';
   isAddingRequest = false;
   isSubmittingAddRequest = false;
   selectedCategoryId = '';
@@ -39,6 +41,7 @@ export class RequestsComponent {
     description: '',
     categoryItemId: ''
   };
+
 
   constructor(
     private requestService: RequestService,
@@ -68,7 +71,7 @@ export class RequestsComponent {
     this.errorMessage = '';
 
     if (this.role === 'Admin' || this.role === 'Manager') {
-      this.requestService.getPagedRequests(page, this.pageSize).subscribe({
+      this.requestService.getPagedRequests(page, this.pageSize, this.sortBy, this.sortOrder).subscribe({
         next: (response) => {
           const data = response.data ?? [];
 
@@ -87,7 +90,7 @@ export class RequestsComponent {
     }
 
     if (this.role === 'Employee') {
-      this.requestService.getRequestsForEmployee(this.id).subscribe({
+      this.requestService.getRequestsForEmployee(this.id, this.sortBy, this.sortOrder).subscribe({
         next: (data) => {
           this.requests = data;
           this.isLoading = false;
@@ -102,7 +105,7 @@ export class RequestsComponent {
     }
 
     if (this.role === 'Staff') {
-      this.requestService.getRequestsForStaff(this.id).subscribe({
+      this.requestService.getRequestsForStaff(this.id, this.sortBy, this.sortOrder).subscribe({
         next: (data) => {
           this.requests = data;
           this.isLoading = false;
@@ -221,6 +224,25 @@ export class RequestsComponent {
     }
 
     this.loadRequests(this.currentPage - 1);
+  }
+
+  setSort(field: string): void {
+    if (this.sortBy === field) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortOrder = 'asc';
+    }
+
+    this.currentPage = 1;
+    this.loadRequests(1);
+  }
+
+  getSortIcon(field: string): string {
+    if (this.sortBy !== field) {
+      return '';
+    }
+    return this.sortOrder === 'asc' ? '↑' : '↓';
   }
 
   loadStaffUsers(): void {

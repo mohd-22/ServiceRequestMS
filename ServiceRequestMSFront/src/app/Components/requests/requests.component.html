@@ -123,18 +123,30 @@
       <table class="table align-middle custom-table">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Status</th>
+            <th class="sortable" [ngClass]="{'sorted': sortBy === 'title', 'asc': sortBy === 'title' && sortOrder === 'asc', 'desc': sortBy === 'title' && sortOrder === 'desc'}" (click)="setSort('title')">
+              Title <span class="sort-icon"></span>
+            </th>
+            <th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">
+              Status <span class="sort-icon"></span>
+            </th>
             <th *ngIf=" role == 'Admin' || role === 'Manager'"> RequseterId</th>
-            <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">Requester</th>
+            <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'" class="sortable" [ngClass]="{'sorted': sortBy === 'requester', 'asc': sortBy === 'requester' && sortOrder === 'asc', 'desc': sortBy === 'requester' && sortOrder === 'desc'}" (click)="setSort('requester')">
+              Requester <span class="sort-icon"></span>
+            </th>
             <th *ngIf="role === 'Staff'">Requester Phone</th>
             <th *ngIf=" role == 'Admin' || role === 'Manager' "> StaffId</th>
             <th *ngIf=" role !== 'Staff'">Assigned Staff</th>
             <th *ngIf="role === 'Manager'">Assign</th>
             <th *ngIf="role === 'Staff'">Change Status</th>
-            <th>Category</th>
-            <th>Item</th>
-            <th>Created</th>
+            <th class="sortable" [ngClass]="{'sorted': sortBy === 'category', 'asc': sortBy === 'category' && sortOrder === 'asc', 'desc': sortBy === 'category' && sortOrder === 'desc'}" (click)="setSort('category')">
+              Category <span class="sort-icon"></span>
+            </th>
+            <th class="sortable" [ngClass]="{'sorted': sortBy === 'item', 'asc': sortBy === 'item' && sortOrder === 'asc', 'desc': sortBy === 'item' && sortOrder === 'desc'}" (click)="setSort('item')">
+              Item <span class="sort-icon"></span>
+            </th>
+            <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdDate', 'asc': sortBy === 'createdDate' && sortOrder === 'asc', 'desc': sortBy === 'createdDate' && sortOrder === 'desc'}" (click)="setSort('createdDate')">
+              Created <span class="sort-icon"></span>
+            </th>
           </tr>
         </thead>
         <tbody>
