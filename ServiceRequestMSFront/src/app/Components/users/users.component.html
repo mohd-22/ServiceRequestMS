@@ -113,14 +113,14 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Full Name</th>
-						<th>User Name</th>
-						<th>Email</th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'fullName', 'asc': sortBy === 'fullName' && sortOrder === 'asc', 'desc': sortBy === 'fullName' && sortOrder === 'desc'}" (click)="setSort('fullName')">Full Name <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'userName', 'asc': sortBy === 'userName' && sortOrder === 'asc', 'desc': sortBy === 'userName' && sortOrder === 'desc'}" (click)="setSort('userName')">User Name <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'email', 'asc': sortBy === 'email' && sortOrder === 'asc', 'desc': sortBy === 'email' && sortOrder === 'desc'}" (click)="setSort('email')">Email <span class="sort-icon"></span></th>
 						<th>Phone</th>
-						<th>Role</th>
-						<th>Status</th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'role', 'asc': sortBy === 'role' && sortOrder === 'asc', 'desc': sortBy === 'role' && sortOrder === 'desc'}" (click)="setSort('role')">Role <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">Status <span class="sort-icon"></span></th>
                         <th *ngIf="canAddUser()">Action</th>
-                        <th>Created</th>
+                        <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdAt', 'asc': sortBy === 'createdAt' && sortOrder === 'asc', 'desc': sortBy === 'createdAt' && sortOrder === 'desc'}" (click)="setSort('createdAt')">Created <span class="sort-icon"></span></th>
 					</tr>
 				</thead>
 				<tbody>

@@ -105,6 +105,44 @@
 	border-bottom: 1px solid #d9e8ef;
 }
 
+.custom-table thead th.sortable {
+	cursor: pointer;
+	user-select: none;
+}
+
+.sort-icon {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 8px;
+	vertical-align: middle;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid #9fbfcc;
+	opacity: 0.45;
+	transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.custom-table thead th.sortable:hover .sort-icon {
+	opacity: 0.8;
+}
+
+.custom-table thead th.sortable.sorted .sort-icon {
+	opacity: 1;
+}
+
+.custom-table thead th.sortable.asc .sort-icon {
+	border-top-color: #0a6c84;
+	border-bottom: none;
+	transform: translateY(1px);
+}
+
+.custom-table thead th.sortable.desc .sort-icon {
+	border-top-color: transparent;
+	border-bottom: 6px solid #0a6c84;
+	transform: translateY(-1px);
+}
+
 .custom-table tbody tr {
 	transition: background-color 0.15s ease;
 }
