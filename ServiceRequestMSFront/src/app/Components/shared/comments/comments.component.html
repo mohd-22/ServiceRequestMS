@@ -25,6 +25,16 @@
             {{ comment.userRole }}
           </span>
           <small class="comment-date">{{ formatDate(comment.createdAt) }}</small>
+          <div class="comment-actions" *ngIf="canDeleteComment(comment)">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger"
+              [disabled]="isDeleteLoading(comment.id)"
+              (click)="deleteComment(comment.id)"
+              title="Delete comment">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
         </div>
         <div class="comment-text">{{ comment.text }}</div>
       </div>

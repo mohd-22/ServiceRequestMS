@@ -55,6 +55,7 @@
     "ITEMS": "Items",
     "ACTIONS": "Actions",
     "EDIT": "Edit",
+    "ITEM" : "Item",
     "DELETE": "Delete",
     "SAVE": "Save",
     "CANCEL": "Cancel",

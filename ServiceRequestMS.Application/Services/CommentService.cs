@@ -37,11 +37,22 @@ namespace ServiceRequestMS.Application.Services
                 Text = c.CommentText,
                 CreatedAt = c.CreatedDate,
                 UserName = c.User!.FullName, 
-                UserRole = c.User.Role.ToString() 
+                UserRole = c.User.Role.ToString(),
+                UserId = c.UserId
             }).ToList();
 
             return ApiResponse<IEnumerable<CommentReadDto>>.SuccessResponse(commentDtos, "Comments Retrieved Successfully");
         }
+
+        public async Task<ApiResponse<bool>> DeleteComment(Guid commentId)
+        {
+            var comment = await _unitOfWork.Comments.GetByIdAsync(commentId);
+            if (comment == null) { return ApiResponse<bool>.FailureResponse("Comment not found!"); }
+            _unitOfWork.Comments.Delete(comment);
+            await _unitOfWork.CompleteAsync();
+            return ApiResponse<bool>.SuccessResponse(true, "Comment Deleted Successfully");
+        }
+
 
 
     }

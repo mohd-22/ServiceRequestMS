@@ -12,5 +12,6 @@ namespace ServiceRequestMS.Application.Services.Interfaces
     {   
         Task<ApiResponse<CreateCommentDto>> CreateComment(CreateCommentDto commentDto, Guid Userid);
         Task<ApiResponse<IEnumerable<CommentReadDto>>> GetAllComments(Guid requestId);
+        Task<ApiResponse<bool>> DeleteComment(Guid commentId);
     }
 }

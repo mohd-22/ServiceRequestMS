@@ -19,6 +19,8 @@ export class CommentsComponent implements OnInit, OnChanges {
   isSubmitting = false;
   errorMessage = '';
   userRole: string | null = null;
+  userId: string | null = null;
+  deletingCommentId: string | null = null;
 
   constructor(
     private commentService: CommentService,
@@ -27,6 +29,7 @@ export class CommentsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
+    this.userId = this.authService.getUserId();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -111,5 +114,34 @@ export class CommentsComponent implements OnInit, OnChanges {
       default:
         return 'bg-secondary';
     }
+  }
+
+  canDeleteComment(comment: CommentReadDto): boolean {
+    return this.userId === comment.userId || this.userRole === 'Admin';
+  }
+
+  deleteComment(commentId: string): void {
+    if (!confirm('Are you sure you want to delete this comment?')) {
+      return;
+    }
+
+    this.deletingCommentId = commentId;
+    this.errorMessage = '';
+
+    this.commentService.deleteComment(commentId).subscribe({
+      next: () => {
+        this.deletingCommentId = null;
+        this.loadComments();
+      },
+      error: (error) => {
+        this.deletingCommentId = null;
+        this.errorMessage = 'Could not delete comment.';
+        console.error('Error deleting comment:', error);
+      }
+    });
+  }
+
+  isDeleteLoading(commentId: string): boolean {
+    return this.deletingCommentId === commentId;
   }
 }
