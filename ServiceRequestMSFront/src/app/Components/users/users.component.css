@@ -58,6 +58,29 @@
 	background: #f9fcff;
 }
 
+.search-panel {
+	margin-bottom: 16px;
+	padding: 14px;
+	border: 1px solid #d9e8ef;
+	border-radius: 10px;
+	background: #f5f9fc;
+}
+
+.search-input-group {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.search-input-group .form-control {
+	flex: 1;
+	min-width: 200px;
+}
+
+.search-input-group .btn {
+	white-space: nowrap;
+}
+
 .add-user-title {
 	margin: 0 0 12px;
 	font-size: 1.1rem;

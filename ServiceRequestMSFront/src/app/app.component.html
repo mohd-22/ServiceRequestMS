@@ -9,30 +9,33 @@
       <nav class="menu">
         <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="menu-link">
           <span class="menu-icon">D</span>
-          <span class="menu-label" *ngIf="!isSidebarCollapsed">Dashboard</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">{{ 'NAV.DASHBOARD' | translate }}</span>
         </a>
 
         <a routerLink="/requests" routerLinkActive="active" class="menu-link">
           <span class="menu-icon">R</span>
-          <span class="menu-label" *ngIf="!isSidebarCollapsed">Requests</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">{{ 'NAV.REQUESTS' | translate }}</span>
         </a>
         <a routerLink="/categories" routerLinkActive="active" class="menu-link">
           <span class="menu-icon">C</span>
-          <span class="menu-label" *ngIf="!isSidebarCollapsed">Categories</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">{{ 'NAV.CATEGORIES' | translate }}</span>
         </a>
         <a routerLink="/users" routerLinkActive="active" class="menu-link">
           <span class="menu-icon">U</span>
-          <span class="menu-label" *ngIf="!isSidebarCollapsed">Users</span>
+          <span class="menu-label" *ngIf="!isSidebarCollapsed">{{ 'NAV.USERS' | translate }}</span>
         </a>
       </nav>
     </aside>
 
     <div class="main-wrap">
       <header class="topbar">
-        <button type="button" class="toggle-btn" (click)="toggleSidebar()">Menu</button>
-        <div class="topbar-title"><span>{{ role }}</span> Dashboard</div>
-        <button type="button" class="profile-btn ms-auto" routerLink="/profile">Profile</button>
-        <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+        <button type="button" class="toggle-btn" (click)="toggleSidebar()">{{ 'COMMON.MENU' | translate }}</button>
+        <div class="topbar-title"><span>{{ role }}</span> {{ 'NAV.DASHBOARD' | translate }}</div>
+        <div class="topbar-actions">
+          <app-language-switcher></app-language-switcher>
+          <button type="button" class="profile-btn" routerLink="/profile">{{ 'NAV.PROFILE' | translate }}</button>
+          <button type="button" class="logout-btn" (click)="logout()">{{ 'NAV.LOGOUT' | translate }}</button>
+        </div>
       </header>
 
       <main class="content-area">

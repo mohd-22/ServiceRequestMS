@@ -11,7 +11,6 @@ namespace ServiceRequestMS.Api.Controllers;
 public class ItemController : ControllerBase
 {
     IItemService _itemService;
-
     public ItemController(IItemService itemService)
     {
         _itemService = itemService;

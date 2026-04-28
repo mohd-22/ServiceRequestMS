@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceRequestMS.Application\ServiceRequestMS.Application.csproj" />
-    <ProjectReference Include="..\ServiceRequestMS.Data\ServiceRequestMS.Data.csproj" />
   </ItemGroup>
 
 </Project>

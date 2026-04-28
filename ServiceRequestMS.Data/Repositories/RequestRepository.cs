@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceRequestMS.Core.Models;
 using ServiceRequestMS.data.Data;
-using ServiceRequestMS.Data.Repositories.Interfaces;
+using ServiceRequestMS.Data.Repositories.       Interfaces;
 using System.Linq;
 
 namespace ServiceRequestMS.Data.Repositories
@@ -16,7 +16,7 @@ namespace ServiceRequestMS.Data.Repositories
                 .Include(r => r.Requester)
                 .Include(r => r.AssignedStaff)
                 .Include(r => r.CategoryItem)
-                    .ThenInclude(ci => ci.Category)
+                    .ThenInclude(ci => ci!.Category)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -25,7 +25,7 @@ namespace ServiceRequestMS.Data.Repositories
         {
             return await _context.Requests
                 .Include(r => r.CategoryItem)
-                    .ThenInclude(ci => ci.Category)
+                    .ThenInclude(ci => ci!.Category)
                 .Include(r => r.AssignedStaff)
                 .Where(r => r.CreatedBy == userId) 
                 .AsNoTracking()
@@ -36,20 +36,31 @@ namespace ServiceRequestMS.Data.Repositories
             return await _context.Requests
                     .Include(r => r.Requester)
                     .Include(r => r.CategoryItem)
-                        .ThenInclude(ci => ci.Category)
+                        .ThenInclude(ci => ci!.Category)
                     .Where(r => r.AssignedStaffId == userId)
                     .AsNoTracking()
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<Request>> GetPagedRequests(int pageNumber, int pageSize, string? sortBy = null, string sortOrder = "desc")
+        public async Task<IEnumerable<Request>> GetPagedRequests(int pageNumber, int pageSize, string? searchTerm = null,string? sortBy = null, string sortOrder = "desc")
         {
             var query = _context.Requests
                 .Include(r => r.Requester)
                 .Include(r => r.AssignedStaff)
                 .Include(r => r.CategoryItem)
-                    .ThenInclude(ci => ci.Category)
+                    .ThenInclude(ci => ci!.Category)
                 .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.Trim().ToLower();
+
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(searchTerm) ||
+                    r.Requester.FullName.ToLower().Contains(searchTerm) ||
+                    r.AssignedStaff!.FullName.ToLower().Contains(searchTerm)
+                );
+            }
 
             query = ApplySort(query, sortBy, sortOrder);
 
@@ -59,40 +70,71 @@ namespace ServiceRequestMS.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Request>> GetAllWithDetailsAsync(string? sortBy = null, string sortOrder = "desc")
+        public async Task<IEnumerable<Request>> GetAllWithDetailsAsync(string? searchTerm = null,string? sortBy = null, string sortOrder = "desc")
         {
             var query = _context.Requests
                 .Include(r => r.Requester)
                 .Include(r => r.AssignedStaff)
                 .Include(r => r.CategoryItem)
-                    .ThenInclude(ci => ci.Category)
+                    .ThenInclude(ci => ci!.Category)
                 .AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.Trim().ToLower();
+
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(searchTerm) ||
+                    r.Requester.FullName.ToLower().Contains(searchTerm) ||
+                    r.AssignedStaff!.FullName.ToLower().Contains(searchTerm)
+                );
+            }
 
             query = ApplySort(query, sortBy, sortOrder);
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Request>> GetRequestsByEmpIdAsync(Guid userId, string? sortBy = null, string sortOrder = "desc")
+        public async Task<IEnumerable<Request>> GetRequestsByEmpIdAsync(Guid userId,string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
         {
             var query = _context.Requests
                 .Include(r => r.CategoryItem)
-                    .ThenInclude(ci => ci.Category)
+                    .ThenInclude(ci => ci!.Category)
                 .Include(r => r.AssignedStaff)
                 .Where(r => r.CreatedBy == userId)
                 .AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.Trim().ToLower();
+
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(searchTerm) ||
+                    r.Requester.FullName.ToLower().Contains(searchTerm) ||
+                    r.AssignedStaff!.FullName.ToLower().Contains(searchTerm)
+                );
+            }
 
             query = ApplySort(query, sortBy, sortOrder);
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Request>> GetRequestsByStaffIdAsync(Guid userId, string? sortBy = null, string sortOrder = "desc")
+        public async Task<IEnumerable<Request>> GetRequestsByStaffIdAsync(Guid userId,string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
         {
             var query = _context.Requests
                     .Include(r => r.Requester)
                     .Include(r => r.CategoryItem)
-                        .ThenInclude(ci => ci.Category)
+                        .ThenInclude(ci => ci!.Category)
                     .Where(r => r.AssignedStaffId == userId)
                     .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.Trim().ToLower();
+
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(searchTerm) ||
+                    r.Requester.FullName.ToLower().Contains(searchTerm) ||
+                    r.AssignedStaff!.FullName.ToLower().Contains(searchTerm)
+                );
+            }
 
             query = ApplySort(query, sortBy, sortOrder);
             return await query.ToListAsync();

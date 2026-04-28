@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceRequestMS.Application.Common
+namespace ServiceRequestMS.Data.Data
 {
     public class DatabaseOptions
     {

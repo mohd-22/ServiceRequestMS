@@ -8,10 +8,18 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 {
     public UserRepository(AppDbContext context) : base(context) { }
 
-    public async Task<IEnumerable<User>> GetPagedUsers(int pageNumber, int pageSize, string? sortBy = null, string sortOrder = "desc")
+    public async Task<IEnumerable<User>> GetPagedUsers(int pageNumber, int pageSize, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var query = _context.Users.Include(u => u.CreatedRequests).AsNoTracking();
-        
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            searchTerm = searchTerm.Trim().ToLower();
+            query = query.Where(u => u.FullName.ToLower().Contains(searchTerm) ||
+                                     u.Email.ToLower().Contains(searchTerm) ||
+                                     u.PhoneNumber.ToLower().Contains(searchTerm));
+        }
+
         query = ApplySort(query, sortBy, sortOrder);
 
         return await query

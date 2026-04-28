@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
   readonly pageSize = 5;
   sortBy = 'createdAt';
   sortOrder: 'asc' | 'desc' = 'desc';
+  searchTerm = '';
   readonly roleOptions: Array<{ label: string; value: UserRoles }> = [
     { label: 'Admin', value: UserRoles.Admin },
     { label: 'Manager', value: UserRoles.Manager },
@@ -51,7 +52,7 @@ export class UsersComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userService.getPagedUsers(page, this.pageSize, this.sortBy, this.sortOrder).subscribe({
+    this.userService.getPagedUsers(page, this.pageSize, this.sortBy, this.sortOrder, this.searchTerm).subscribe({
       next: (response) => {
         const data = response.data ?? [];
         const visibleUsers = this.role === 'Manager'
@@ -202,6 +203,17 @@ export class UsersComponent implements OnInit {
       return '';
     }
     return this.sortOrder === 'asc' ? '↑' : '↓';
+  }
+
+  onSearch(): void {
+    this.currentPage = 1;
+    this.loadUsers(1);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadUsers(1);
   }
 
   private createEmptyUser(): UserRegistrationDto {

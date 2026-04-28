@@ -12,7 +12,7 @@ namespace ServiceRequestMS.Data.Repositories
 
         public IUserRepository Users { get; }
         public IGenericRepository<Attachment> Attachments { get; }
-        public IGenericRepository<Comment> Comments { get; }
+        public ICommentRepository Comments { get; }
         public IGenericRepository<Item> Items { get; }
         public ICategoryRepository Categories { get; }
         public IRequestRepository Requests { get; }
@@ -22,7 +22,7 @@ namespace ServiceRequestMS.Data.Repositories
             _context = context;
             Users = new UserRepository(_context);
             Attachments = new GenericRepository<Attachment>(_context);
-            Comments = new GenericRepository<Comment>(_context);
+            Comments = new CommentRepository(_context);
             Items = new GenericRepository<Item>(_context);
             Categories = new CategoryRepository(_context);
             Requests = new RequestRepository(_context);

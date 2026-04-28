@@ -141,3 +141,16 @@ export interface ApiResponse<T> {
     data: T;
     errors?: string[] | null;
 }
+
+export interface CommentReadDto {
+    id: string;
+    text: string;
+    createdAt: string;
+    userName: string;
+    userRole: string;
+}
+
+export interface CreateCommentDto {
+    text: string;
+    requestId: string;
+}

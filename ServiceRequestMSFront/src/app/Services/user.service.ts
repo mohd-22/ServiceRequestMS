@@ -18,11 +18,14 @@ export class UserService {
       .pipe(map((response) => response.data ?? []));
   }
 
-  getPagedUsers(page: number, pageSize: number = 5, sortBy?: string, sortOrder: 'asc' | 'desc' = 'desc'): Observable<ApiResponse<UserDto[]>> {
+  getPagedUsers(page: number, pageSize: number = 5, sortBy?: string, sortOrder: 'asc' | 'desc' = 'desc', searchTerm?: string): Observable<ApiResponse<UserDto[]>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
 
+    if (searchTerm) {
+      params = params.set('searchTerm', searchTerm);
+    }
     if (sortBy) {
       params = params.set('sortBy', sortBy);
     }

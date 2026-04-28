@@ -1,30 +1,46 @@
 <section class="requests-page">
+<section class="requests-page">
   <header class="header-card">
-    <h1 class="page-title">Requests Dashboard</h1>
-    <p class="page-subtitle"><span>{{ role }}</span> view for all service requests.</p>
+    <h1 class="page-title">{{ 'REQUESTS.TITLE' | translate }}</h1>
+    <p class="page-subtitle"><span>{{ role }}</span> {{ 'REQUESTS.VIEW' | translate }}</p>
   </header>
 
   <section class="table-card">
     <div class="table-header-row">
-      <h2 class="table-title">Requests</h2>
-      <span class="request-count">{{ requests.length }} total</span>
+      <h2 class="table-title">{{ 'REQUESTS.TITLE' | translate }}</h2>
+      <span class="request-count">{{ requests.length }} {{ 'REQUESTS.TOTAL' | translate }}</span>
+      <div class="search-container">
+        <input
+          type="text"
+          class="form-control search-input"
+          [placeholder]="'REQUESTS.SEARCH' | translate"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()">
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm clear-search-btn"
+          *ngIf="searchTerm"
+          (click)="clearSearch()">
+          {{ 'COMMON.CLEAR' | translate }}
+        </button>
+      </div>
       <div class="table-actions">
         <button
           *ngIf="canAddRequest() && !isAddingRequest"
           type="button"
           class="btn btn-primary btn-sm"
           (click)="openAddRequestForm()">
-          Add New Request
+          {{ 'REQUESTS.ADD_NEW' | translate }}
         </button>
       </div>
     </div>
 
     <section class="add-request-panel" *ngIf="isAddingRequest && canAddRequest()">
-      <h3 class="add-request-title">Add New Request</h3>
+      <h3 class="add-request-title">{{ 'REQUESTS.ADD_NEW' | translate }}</h3>
       <div *ngIf="addRequestErrorMessage" class="state-box state-error">{{ addRequestErrorMessage }}</div>
       <form class="row g-3" (ngSubmit)="submitAddRequest()" #addRequestForm="ngForm">
         <div class="col-12 col-md-6">
-          <label for="requestTitle" class="form-label">Title</label>
+          <label for="requestTitle" class="form-label">{{ 'REQUESTS.TITLE_LABEL' | translate }}</label>
           <input
             id="requestTitle"
             name="requestTitle"
@@ -36,7 +52,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-          <label for="requestCategory" class="form-label">Category</label>
+          <label for="requestCategory" class="form-label">{{ 'REQUESTS.CATEGORY' | translate }}</label>
           <select
             id="requestCategory"
             name="requestCategory"
@@ -45,7 +61,7 @@
             [disabled]="isLoadingCategories"
             [(ngModel)]="selectedCategoryId"
             (ngModelChange)="onCategoryChange()">
-            <option value="">Select category</option>
+            <option value="">{{ 'REQUESTS.SELECT_CATEGORY' | translate }}</option>
             <option *ngFor="let category of categories" [value]="category.id">
               {{ category.name }}
             </option>
@@ -53,7 +69,7 @@
         </div>
 
         <div class="col-12">
-          <label for="requestDescription" class="form-label">Description</label>
+          <label for="requestDescription" class="form-label">{{ 'REQUESTS.DESCRIPTION' | translate }}</label>
           <textarea
             id="requestDescription"
             name="requestDescription"
@@ -64,7 +80,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-          <label for="requestItem" class="form-label">Item</label>
+          <label for="requestItem" class="form-label">{{ 'CATEGORIES.ITEMS' | translate }}</label>
           <select
             id="requestItem"
             name="requestItem"
@@ -72,7 +88,7 @@
             required
             [disabled]="!selectedCategoryId || isLoadingCategories"
             [(ngModel)]="newRequest.categoryItemId">
-            <option value="">Select item</option>
+            <option value="">{{ 'REQUESTS.SELECT_CATEGORY' | translate }}</option>
             <option *ngFor="let item of categoryItems" [value]="item.id">
               {{ item.name }}
             </option>
@@ -81,7 +97,7 @@
 
         <div class="col-12 form-actions">
           <button type="submit" class="btn btn-primary" [disabled]="addRequestForm.invalid || isSubmittingAddRequest">
-            {{ isSubmittingAddRequest ? 'Saving...' : 'Save Request' }}
+            {{ isSubmittingAddRequest ? ('COMMON.LOADING' | translate) : ('REQUESTS.SUBMIT' | translate) }}
           </button>
           <button type="button" class="btn btn-outline-secondary" [disabled]="isSubmittingAddRequest" (click)="closeAddRequestForm()">
             Cancel
@@ -92,13 +108,13 @@
 
     <div *ngIf="addRequestSuccessMessage" class="state-box state-loading">{{ addRequestSuccessMessage }}</div>
 
-    <div *ngIf="isLoadingStaff" class="state-box state-loading">Loading staff users...</div>
+    <div *ngIf="isLoadingStaff" class="state-box state-loading">{{ 'COMMON.LOADING' | translate }} {{ 'USERS.TITLE' | translate | lowercase }}...</div>
     <div *ngIf="!isLoadingStaff && staffErrorMessage" class="state-box state-error">{{ staffErrorMessage }}</div>
 
-    <div *ngIf="isLoading" class="state-box state-loading">Loading requests...</div>
+    <div *ngIf="isLoading" class="state-box state-loading">{{ 'COMMON.LOADING' | translate }} {{ 'REQUESTS.TITLE' | translate | lowercase }}...</div>
     <div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
     <div *ngIf="!isLoading && !errorMessage && requests.length === 0" class="state-box state-empty">
-      No requests found.
+      {{ 'REQUESTS.NO_REQUESTS' | translate }}
     </div>
 
     <div class="pagination-row" *ngIf="canUsePaging() && !isLoading">
@@ -107,15 +123,15 @@
         class="btn btn-sm btn-outline-secondary"
         (click)="goToPreviousPage()"
         [disabled]="currentPage <= 1">
-        Previous
+        {{ 'COMMON.PREVIOUS' | translate }}
       </button>
-      <span class="page-indicator">Page {{ currentPage }} / {{ totalPages }}</span>
+      <span class="page-indicator">{{ 'COMMON.PAGE' | translate }} {{ currentPage }} / {{ totalPages }}</span>
       <button
         type="button"
         class="btn btn-sm btn-outline-secondary"
         (click)="goToNextPage()"
         [disabled]="currentPage >= totalPages">
-        Next
+        {{ 'COMMON.NEXT' | translate }}
       </button>
     </div>
 
@@ -124,29 +140,30 @@
         <thead>
           <tr>
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'title', 'asc': sortBy === 'title' && sortOrder === 'asc', 'desc': sortBy === 'title' && sortOrder === 'desc'}" (click)="setSort('title')">
-              Title <span class="sort-icon"></span>
+              {{ 'REQUESTS.TITLE_LABEL' | translate }} <span class="sort-icon"></span>
             </th>
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">
-              Status <span class="sort-icon"></span>
+              {{ 'COMMON.STATUS' | translate }} <span class="sort-icon"></span>
             </th>
-            <th *ngIf=" role == 'Admin' || role === 'Manager'"> RequseterId</th>
+            <th *ngIf=" role == 'Admin' || role === 'Manager'"> {{ 'USERS.REQUESTER_ID' | translate }}</th>
             <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'" class="sortable" [ngClass]="{'sorted': sortBy === 'requester', 'asc': sortBy === 'requester' && sortOrder === 'asc', 'desc': sortBy === 'requester' && sortOrder === 'desc'}" (click)="setSort('requester')">
-              Requester <span class="sort-icon"></span>
+              {{ 'USERS.REQUESTER' | translate }} <span class="sort-icon"></span>
             </th>
-            <th *ngIf="role === 'Staff'">Requester Phone</th>
-            <th *ngIf=" role == 'Admin' || role === 'Manager' "> StaffId</th>
-            <th *ngIf=" role !== 'Staff'">Assigned Staff</th>
-            <th *ngIf="role === 'Manager'">Assign</th>
-            <th *ngIf="role === 'Staff'">Change Status</th>
+            <th *ngIf="role === 'Staff'">{{ 'USERS.STAFFID' | translate }}</th>
+        <th *ngIf=" role == 'Admin' || role === 'Manager' "> {{ 'USERS.STAFFID' | translate }}</th>
+            <th *ngIf=" role !== 'Staff'">{{ 'USERS.ASSIGNED_STAFF' | translate }}</th>
+            <th *ngIf="role === 'Manager'">{{ 'COMMON.ASSIGN' | translate }}</th>
+            <th *ngIf="role === 'Staff'">{{ 'COMMON.CHANGE_STATUS' | translate }}</th>
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'category', 'asc': sortBy === 'category' && sortOrder === 'asc', 'desc': sortBy === 'category' && sortOrder === 'desc'}" (click)="setSort('category')">
-              Category <span class="sort-icon"></span>
+              {{ 'REQUESTS.CATEGORY' | translate }} <span class="sort-icon"></span>
             </th>
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'item', 'asc': sortBy === 'item' && sortOrder === 'asc', 'desc': sortBy === 'item' && sortOrder === 'desc'}" (click)="setSort('item')">
-              Item <span class="sort-icon"></span>
+              {{ 'CATEGORIES.ITEMS.NAME' | translate }} <span class="sort-icon"></span>
             </th>
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdDate', 'asc': sortBy === 'createdDate' && sortOrder === 'asc', 'desc': sortBy === 'createdDate' && sortOrder === 'desc'}" (click)="setSort('createdDate')">
-              Created <span class="sort-icon"></span>
+              {{ 'USERS.CREATED' | translate }} <span class="sort-icon"></span>
             </th>
+            <th>{{ 'COMMON.COMMENTS' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -156,7 +173,7 @@
               <div class="text-muted small">{{ request.description }}</div>
             </td>
             <td>
-              <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
+              <span [class]="getStatusClass(request.status)">{{ getStatusText(request.status) | translate }}</span>
             </td>
             <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.requesterId }}</td>
             <td *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">{{ request.requesterName }}</td>
@@ -226,9 +243,25 @@
             </td>
             <td>{{ request.itemName }}</td>
             <td>{{ formatDate(request.createdDate) }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                (click)="viewComments(request.id)"
+                title="{{ 'COMMON.COMMENTS' | translate }}">
+                <i class="fas fa-comments"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
+
+  <!-- Comments Modal -->
+  <app-comments
+    [requestId]="activeCommentsRequestId || ''"
+    [isVisible]="isCommentsModalVisible"
+    (closeModal)="closeCommentsModal()">
+  </app-comments>
 </section>

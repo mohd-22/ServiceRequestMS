@@ -4,6 +4,7 @@ import { RequestService } from '../../Services/request.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service';
 import { CategoryService } from 'src/app/Services/category.service';
+import { CommentService } from 'src/app/Services/comment.service';
 
 @Component({
   selector: 'app-requests',
@@ -29,6 +30,7 @@ export class RequestsComponent {
   readonly pageSize = 5;
   sortBy = 'createdDate';
   sortOrder: 'asc' | 'desc' = 'desc';
+  searchTerm = '';
   isAddingRequest = false;
   isSubmittingAddRequest = false;
   selectedCategoryId = '';
@@ -36,6 +38,8 @@ export class RequestsComponent {
   activeStatusRequestId: string | null = null;
   selectedStaffByRequestId: Record<string, string> = {};
   selectedNextStatusByRequestId: Record<string, string> = {};
+  isCommentsModalVisible = false;
+  activeCommentsRequestId: string | null = null;
   newRequest: CreateRequestDto = {
     title: '',
     description: '',
@@ -47,7 +51,8 @@ export class RequestsComponent {
     private requestService: RequestService,
     private userService: UserService,
     private authService: AuthService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private commentService: CommentService
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +76,7 @@ export class RequestsComponent {
     this.errorMessage = '';
 
     if (this.role === 'Admin' || this.role === 'Manager') {
-      this.requestService.getPagedRequests(page, this.pageSize, this.sortBy, this.sortOrder).subscribe({
+      this.requestService.getPagedRequests(page, this.pageSize, this.sortBy, this.sortOrder, this.searchTerm).subscribe({
         next: (response) => {
           const data = response.data ?? [];
 
@@ -90,7 +95,7 @@ export class RequestsComponent {
     }
 
     if (this.role === 'Employee') {
-      this.requestService.getRequestsForEmployee(this.id, this.sortBy, this.sortOrder).subscribe({
+      this.requestService.getRequestsForEmployee(this.id, this.sortBy, this.sortOrder, this.searchTerm).subscribe({
         next: (data) => {
           this.requests = data;
           this.isLoading = false;
@@ -105,7 +110,7 @@ export class RequestsComponent {
     }
 
     if (this.role === 'Staff') {
-      this.requestService.getRequestsForStaff(this.id, this.sortBy, this.sortOrder).subscribe({
+      this.requestService.getRequestsForStaff(this.id, this.sortBy, this.sortOrder, this.searchTerm).subscribe({
         next: (data) => {
           this.requests = data;
           this.isLoading = false;
@@ -245,6 +250,17 @@ export class RequestsComponent {
     return this.sortOrder === 'asc' ? '↑' : '↓';
   }
 
+  onSearch(): void {
+    this.currentPage = 1;
+    this.loadRequests(1);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadRequests(1);
+  }
+
   loadStaffUsers(): void {
     this.isLoadingStaff = true;
     this.staffErrorMessage = '';
@@ -367,6 +383,25 @@ export class RequestsComponent {
     }
   }
 
+  getStatusText(status: string): string {
+    switch (this.normalizeStatus(status)) {
+      case 'new':
+        return 'REQUESTS.STATUS.NEW';
+      case 'assigned':
+        return 'REQUESTS.STATUS.ASSIGNED';
+      case 'inprogress':
+        return 'REQUESTS.STATUS.INPROGRESS';
+      case 'accepted':
+        return 'REQUESTS.STATUS.ACCEPTED';
+      case 'rejected':
+        return 'REQUESTS.STATUS.REJECTED';
+      case 'paused':
+        return 'REQUESTS.STATUS.PAUSED';
+      default:
+        return status;
+    }
+  }
+
   formatDate(value: string): string {
     if (!value) {
       return '-';
@@ -378,6 +413,16 @@ export class RequestsComponent {
     }
 
     return parsed.toLocaleString();
+  }
+
+  viewComments(requestId: string): void {
+    this.activeCommentsRequestId = requestId;
+    this.isCommentsModalVisible = true;
+  }
+
+  closeCommentsModal(): void {
+    this.isCommentsModalVisible = false;
+    this.activeCommentsRequestId = null;
   }
 
   private loadCategories(): void {

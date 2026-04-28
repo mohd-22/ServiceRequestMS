@@ -9,22 +9,22 @@ namespace ServiceRequestMS.Application.DTOs
     public class RequestAdminDto
     {
         public Guid Id { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
 
-        public string Status { get; set; }
+        public string Status { get; set; }  = string.Empty;
 
         public Guid RequesterId { get; set; } 
-        public string RequesterName { get; set; } 
+        public string RequesterName { get; set; } = string.Empty;
 
         public Guid? AssignedStaffId { get; set; }
-        public string AssignedStaffName { get; set; } 
+        public string AssignedStaffName { get; set; } = string.Empty;
 
 
         public Guid CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string ItemName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
+        public string ItemName { get; set; } = string.Empty;
 
 
         public DateTime CreatedDate { get; set; }

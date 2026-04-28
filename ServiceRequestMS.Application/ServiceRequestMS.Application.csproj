@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceRequestMS.core\ServiceRequestMS.core.csproj" />
+    <ProjectReference Include="..\ServiceRequestMS.Data\ServiceRequestMS.Data.csproj" />
   </ItemGroup>
 
 </Project>

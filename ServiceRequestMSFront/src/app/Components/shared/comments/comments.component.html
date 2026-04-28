@@ -1,0 +1,66 @@
+<div class="modal-backdrop" *ngIf="isVisible" (click)="close()"></div>
+
+<div class="comments-modal" *ngIf="isVisible">
+  <div class="modal-header">
+    <h3 class="modal-title">{{ 'COMMON.COMMENTS' | translate }}</h3>
+    <button type="button" class="btn-close" (click)="close()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <!-- Comments List -->
+    <div class="comments-list" *ngIf="!isLoading">
+      <div *ngIf="comments.length === 0" class="no-comments">
+        {{ 'COMMON.NO_COMMENTS' | translate }}
+      </div>
+
+      <div *ngFor="let comment of comments" class="comment-item">
+        <div class="comment-header">
+          <strong>{{ comment.userName }}</strong>
+          <span class="user-role badge" [ngClass]="getRoleBadgeClass(comment.userRole)">
+            {{ comment.userRole }}
+          </span>
+          <small class="comment-date">{{ formatDate(comment.createdAt) }}</small>
+        </div>
+        <div class="comment-text">{{ comment.text }}</div>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Add Comment Form (only for Staff and Employee) -->
+    <div *ngIf="canAddComment()" class="add-comment-section">
+      <hr>
+      <h5>{{ 'COMMON.ADD_COMMENT' | translate }}</h5>
+      <form (ngSubmit)="submitComment()">
+        <div class="mb-3">
+          <textarea
+            class="form-control"
+            rows="3"
+            [(ngModel)]="newCommentText"
+            name="commentText"
+            placeholder="{{ 'COMMON.ENTER_COMMENT' | translate }}"
+            required
+            [disabled]="isSubmitting"
+            maxlength="500"></textarea>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!newCommentText.trim() || isSubmitting">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isSubmitting ? ('COMMON.LOADING' | translate) : ('COMMON.SUBMIT_COMMENT' | translate) }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
