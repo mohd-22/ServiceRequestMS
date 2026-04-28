@@ -148,6 +148,7 @@ export interface CommentReadDto {
     createdAt: string;
     userName: string;
     userRole: string;
+    userId: string;
 }
 
 export interface CreateCommentDto {

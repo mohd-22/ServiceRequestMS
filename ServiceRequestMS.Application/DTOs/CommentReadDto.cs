@@ -14,5 +14,6 @@ namespace ServiceRequestMS.Application.DTOs
 
         public string UserName { get; set; } = string.Empty;
         public string UserRole { get; set; } = string.Empty;
+        public Guid UserId { get; set; }
     }
 }

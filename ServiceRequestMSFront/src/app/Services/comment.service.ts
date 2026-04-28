@@ -23,4 +23,10 @@ export class CommentService {
       .post<ApiResponse<CreateCommentDto>>(`${environment.apiUrl}/${this.apiUrl}`, comment)
       .pipe(map(() => void 0));
   }
+
+  deleteComment(commentId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<boolean>>(`${environment.apiUrl}/${this.apiUrl}/${commentId}`)
+      .pipe(map(() => void 0));
+  }
 }

@@ -40,5 +40,14 @@ namespace ServiceRequestMS.Api.Controllers
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
+        [Authorize]
+        [HttpDelete("{id}")] 
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            var result = await _commentService.DeleteComment(id);
+            if (!result.Success) return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

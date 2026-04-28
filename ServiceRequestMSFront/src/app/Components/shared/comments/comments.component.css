@@ -104,6 +104,28 @@
   margin-left: auto;
 }
 
+.comment-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  padding: 0.25rem 0.5rem;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-outline-danger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .comment-text {
   color: #212529;
   line-height: 1.5;
