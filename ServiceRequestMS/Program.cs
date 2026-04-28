@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using ServiceRequestMS.Api.Controllers;
 using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.Application.Services;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.data.Data;
+using ServiceRequestMS.Data.Data;
 using ServiceRequestMS.Data.Repositories;
 using ServiceRequestMS.Data.Repositories.Interfaces;
 using ServiceRequestMS.Services;
@@ -13,7 +15,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
-
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IRequestService, RequestService>();

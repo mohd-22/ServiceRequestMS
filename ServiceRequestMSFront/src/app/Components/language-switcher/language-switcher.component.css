@@ -1,0 +1,30 @@
+.language-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.language-toggle-btn:hover {
+  background-color: #05445e;
+  color: #ffffff;
+  border-color: #05445e;
+}
+
+.language-icon {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.language-text {
+  white-space: nowrap;
+}
+
+/* RTL Support */
+[dir="rtl"] .language-toggle-btn {
+  flex-direction: row-reverse;
+}

@@ -27,23 +27,23 @@ namespace ServiceRequestMS.Api.Controllers
         }
 
         [HttpGet("AdminReq")]
-        public async Task<ActionResult> GetRequestForAdmin()
+        public async Task<ActionResult> GetRequestForAdmin([FromQuery] string? searchTerm = null,[FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
         {
-            var result = await _requestService.GetRequestsForAdminAsync();
+            var result = await _requestService.GetRequestsForAdminAsync(searchTerm,sortBy, sortOrder);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
         [HttpGet("EmpReq/{Id}")]
-        public async Task<ActionResult> GetRequestForEmployee(Guid Id)
+        public async Task<ActionResult> GetRequestForEmployee(Guid Id, [FromQuery] string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
         {
-            var result = await _requestService.GetRequestsForEmployeeAsync(Id);
+            var result = await _requestService.GetRequestsForEmployeeAsync(Id, searchTerm,sortBy, sortOrder);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
         [HttpGet("StaffReq/{Id}")]
-        public async Task<ActionResult> GetRequestForStaff(Guid Id)
+        public async Task<ActionResult> GetRequestForStaff(Guid Id, [FromQuery] string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
         {
-            var result = await _requestService.GetRequestsForStaffAsync(Id);
+            var result = await _requestService.GetRequestsForStaffAsync(Id, searchTerm, sortBy, sortOrder);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }
@@ -62,9 +62,9 @@ namespace ServiceRequestMS.Api.Controllers
             return Ok(result);
         }
         [HttpGet("{page}/{pageSize}")]
-        public async Task<ActionResult> GetPagedRequest(int page, int pageSize)
+        public async Task<ActionResult> GetPagedRequest(int page, int pageSize, [FromQuery] string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
         {
-            var result = await _requestService.GetPagedRequests(page, pageSize);
+            var result = await _requestService.GetPagedRequests(page, pageSize, searchTerm, sortBy, sortOrder);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }

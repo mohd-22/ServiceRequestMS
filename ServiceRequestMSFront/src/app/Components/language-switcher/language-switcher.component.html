@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="btn btn-outline-secondary btn-sm language-toggle-btn"
+  (click)="toggleLanguage()"
+  [title]="currentLanguage === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'">
+  <span class="language-icon">{{ currentLanguage === 'en' ? 'ع' : 'EN' }}</span>
+  <span class="language-text">{{ getLanguageLabel() }}</span>
+</button>

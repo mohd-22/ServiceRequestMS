@@ -18,17 +18,49 @@ export class RequestService {
       .pipe(map((response) => response.data ?? []));
   }
 
-  getPagedRequests(page: number, pageSize: number = 5): Observable<ApiResponse<RequestAdminDto[]>> {
-    return this.http.get<ApiResponse<RequestAdminDto[]>>(`${environment.apiUrl}/${this.apiUrl}/${page}/${pageSize}`);
+  getPagedRequests(page: number, pageSize: number = 5, sortBy: string = 'createdDate', sortOrder: string = 'desc', searchTerm?: string): Observable<ApiResponse<RequestAdminDto[]>> {
+    const params: any = {
+      sortBy,
+      sortOrder
+    };
+    if (searchTerm) {
+      params.searchTerm = searchTerm;
+    }
+    return this.http.get<ApiResponse<RequestAdminDto[]>>(
+      `${environment.apiUrl}/${this.apiUrl}/${page}/${pageSize}`,
+      { params }
+    );
   }
-  getRequestsForEmployee(id : string | null): Observable<RequestForEmployeeDto[]> {
+
+  getRequestsForEmployee(id : string | null, sortBy: string = 'createdDate', sortOrder: string = 'desc', searchTerm?: string): Observable<RequestForEmployeeDto[]> {
+    const params: any = {
+      sortBy,
+      sortOrder
+    };
+    if (searchTerm) {
+      params.searchTerm = searchTerm;
+    }
     return this.http
-      .get<ApiResponse<RequestForEmployeeDto[]>>(`${environment.apiUrl}/${this.apiUrl}/EmpReq/${id}`)
+      .get<ApiResponse<RequestForEmployeeDto[]>>(
+        `${environment.apiUrl}/${this.apiUrl}/EmpReq/${id}`,
+        { params }
+      )
       .pipe(map((response) => response.data ?? []));
   }
-  getRequestsForStaff(id : string | null): Observable<RequestForStaffDto[]> {
+
+  getRequestsForStaff(id : string | null, sortBy: string = 'createdDate', sortOrder: string = 'desc', searchTerm?: string): Observable<RequestForStaffDto[]> {
+    const params: any = {
+      sortBy,
+      sortOrder
+    };
+    if (searchTerm) {
+      params.searchTerm = searchTerm;
+    }
     return this.http
-      .get<ApiResponse<RequestForStaffDto[]>>(`${environment.apiUrl}/${this.apiUrl}/StaffReq/${id}`)
+      .get<ApiResponse<RequestForStaffDto[]>>(
+        `${environment.apiUrl}/${this.apiUrl}/StaffReq/${id}`,
+        { params }
+      )
       .pipe(map((response) => response.data ?? []));
   }
 

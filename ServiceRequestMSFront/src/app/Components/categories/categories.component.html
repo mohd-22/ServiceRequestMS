@@ -1,19 +1,22 @@
 <section class="categories-page">
 	<header class="header-card">
-		<h1 class="page-title">Categories</h1>
-		<p class="page-subtitle">All categories from the system.</p>
+		<h1 class="page-title">{{ 'CATEGORIES.TITLE' | translate }}</h1>
+		<p class="page-subtitle">{{ 'CATEGORIES.ALL_CATEGORIES' | translate }}</p>
 	</header>
 
 	<section class="table-card">
 		<div class="table-header-row">
-			<h2 class="table-title">Categories List</h2>
-			<span class="count-pill">{{ categories.length }} total</span>
+			<h2 class="table-title">{{ 'CATEGORIES.LIST_TITLE' | translate }}</h2>
+			<div class="table-actions">
+				<span class="count-pill">{{ categories.length }} {{ 'COMMON.TOTAL' | translate }}</span>
+				<button *ngIf="canAddCategory()" type="button" class="btn btn-primary btn-sm m-2" (click)="openAddCategoryForm()">{{ 'CATEGORIES.ADD_CATEGORY' | translate }}</button>
+			</div>
 		</div>
 
-		<div *ngIf="isLoading" class="state-box state-loading">Loading categories...</div>
+		<div *ngIf="isLoading" class="state-box state-loading">{{ 'COMMON.LOADING' | translate }} {{ 'CATEGORIES.TITLE' | translate | lowercase }}...</div>
 		<div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
 		<div *ngIf="!isLoading && !errorMessage && categories.length === 0" class="state-box state-empty">
-			No categories found.
+			{{ 'CATEGORIES.NO_CATEGORIES' | translate }}
 		</div>
 
 		<div class="table-responsive" *ngIf="!isLoading && !errorMessage && categories.length > 0">
@@ -21,9 +24,10 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th>Id</th>
+						<th>{{ 'CATEGORIES.NAME' | translate }}</th>
+						<th>{{ 'CATEGORIES.DESCRIPTION' | translate }}</th>
+						<th>{{ 'CATEGORIES.ID' | translate }}</th>
+						<th *ngIf="canAddCategory()">{{ 'CATEGORIES.ACTIONS' | translate }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,22 +39,97 @@
 						<td class="fw-semibold">{{ category.name }}</td>
 						<td>{{ category.description || '-' }}</td>
 						<td><small class="text-muted">{{ category.id }}</small></td>
+						<td *ngIf="canAddCategory()">
+							<button type="button" class="btn btn-warning btn-sm me-1 m-2" (click)="openEditCategoryForm(category); $event.stopPropagation()">{{ 'CATEGORIES.EDIT' | translate }}</button>
+							<button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category); $event.stopPropagation()">{{ 'CATEGORIES.DELETE' | translate }}</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
+		<section class="add-category-panel" *ngIf="isAddingCategory && canAddCategory()">
+			<h3 class="add-category-title">{{ 'CATEGORIES.ADD_CATEGORY' | translate }}</h3>
+			<div *ngIf="addCategoryErrorMessage" class="state-box state-error">{{ addCategoryErrorMessage }}</div>
+			<form class="row g-3" (ngSubmit)="submitAddCategory()" #addCategoryForm="ngForm">
+				<div class="col-md-6">
+					<label class="form-label" for="name">{{ 'CATEGORIES.NAME' | translate }}</label>
+					<input
+						id="name"
+						type="text"
+						class="form-control"
+						name="name"
+						[(ngModel)]="newCategory.name"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="description">{{ 'CATEGORIES.DESCRIPTION' | translate }}</label>
+					<input
+						id="description"
+						type="text"
+						class="form-control"
+						name="description"
+						[(ngModel)]="newCategory.description">
+				</div>
+
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary" [disabled]="isSubmittingAddCategory">
+						{{ isSubmittingAddCategory ? ('COMMON.LOADING' | translate) : ('CATEGORIES.SAVE' | translate) }}
+					</button>
+					<button type="button" class="btn btn-secondary ms-2" (click)="closeAddCategoryForm()">{{ 'CATEGORIES.CANCEL' | translate }}</button>
+				</div>
+			</form>
+		</section>
+
+		<section class="edit-category-panel" *ngIf="isEditingCategory && canAddCategory()">
+			<h3 class="edit-category-title">{{ 'CATEGORIES.EDIT' | translate }} {{ 'CATEGORIES.TITLE' | translate | lowercase }}</h3>
+			<div *ngIf="editCategoryErrorMessage" class="state-box state-error">{{ editCategoryErrorMessage }}</div>
+			<form class="row g-3" (ngSubmit)="submitEditCategory()" #editCategoryForm="ngForm">
+				<div class="col-md-6">
+					<label class="form-label" for="editName">{{ 'CATEGORIES.NAME' | translate }}</label>
+					<input
+						id="editName"
+						type="text"
+						class="form-control"
+						name="name"
+						[(ngModel)]="editingCategory.name"
+						required>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-label" for="editDescription">{{ 'CATEGORIES.DESCRIPTION' | translate }}</label>
+					<input
+						id="editDescription"
+						type="text"
+						class="form-control"
+						name="description"
+						[(ngModel)]="editingCategory.description">
+				</div>
+
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary" [disabled]="isSubmittingEditCategory">
+						{{ isSubmittingEditCategory ? ('COMMON.LOADING' | translate) : ('CATEGORIES.SAVE' | translate) }}
+					</button>
+					<button type="button" class="btn btn-secondary ms-2" (click)="closeEditCategoryForm()">{{ 'CATEGORIES.CANCEL' | translate }}</button>
+				</div>
+			</form>
+		</section>
+
 		<section class="items-panel" *ngIf="selectedCategoryId">
-			<div class="items-header">
-				<h3 class="items-title">Items For Selected Category</h3>
+			<div class="items-header-row">
+				<h3 class="items-title">{{ 'CATEGORIES.ITEMS.TITLE' | translate }}</h3>
+				<div class="items-actions">
+					<button *ngIf="canAddItem()" type="button" class="btn btn-primary btn-sm" (click)="openAddItemForm()">{{ 'CATEGORIES.ITEMS.ADD_ITEM' | translate }}</button>
+				</div>
 			</div>
 
-			<div *ngIf="isLoadingItems" class="state-box state-loading">Loading items...</div>
+			<div *ngIf="isLoadingItems" class="state-box state-loading">{{ 'COMMON.LOADING' | translate }}</div>
 			<div *ngIf="!isLoadingItems && itemsErrorMessage" class="state-box state-error">{{ itemsErrorMessage }}</div>
 			<div
 				*ngIf="!isLoadingItems && !itemsErrorMessage && selectedCategory && selectedCategory.items.length === 0"
 				class="state-box state-empty">
-				No items found for this category.
+				{{ 'CATEGORIES.ITEMS.NO_ITEMS' | translate }}
 			</div>
 
 			<div class="table-responsive"
@@ -59,8 +138,9 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Item Name</th>
-							<th>Description</th>
+							<th>{{ 'CATEGORIES.ITEMS.NAME' | translate }}</th>
+							<th>{{ 'CATEGORIES.ITEMS.DESCRIPTION' | translate }}</th>
+							<th *ngIf="canAddItem()">{{ 'CATEGORIES.ACTIONS' | translate }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -68,10 +148,82 @@
 							<td>{{ idx + 1 }}</td>
 							<td class="fw-semibold">{{ item.name }}</td>
 							<td>{{ item.description || '-' }}</td>
+							<td *ngIf="canAddItem()">
+								<button type="button" class="btn btn-warning btn-sm me-1" (click)="openEditItemForm(item)">{{ 'CATEGORIES.EDIT' | translate }}</button>
+								<button type="button" class="btn btn-danger btn-sm" (click)="deleteItem(item)">{{ 'CATEGORIES.DELETE' | translate }}</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+
+			<section class="add-item-panel" *ngIf="isAddingItem && canAddItem()">
+				<h4 class="add-item-title">{{ 'CATEGORIES.ITEMS.ADD_ITEM' | translate }}</h4>
+				<div *ngIf="addItemErrorMessage" class="state-box state-error">{{ addItemErrorMessage }}</div>
+				<form class="row g-3" (ngSubmit)="submitAddItem()" #addItemForm="ngForm">
+					<div class="col-md-6">
+						<label class="form-label" for="itemName">{{ 'CATEGORIES.ITEMS.NAME' | translate }}</label>
+						<input
+							id="itemName"
+							type="text"
+							class="form-control"
+							name="name"
+							[(ngModel)]="newItem.name"
+							required>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-label" for="itemDescription">{{ 'CATEGORIES.ITEMS.DESCRIPTION' | translate }}</label>
+						<input
+							id="itemDescription"
+							type="text"
+							class="form-control"
+							name="description"
+							[(ngModel)]="newItem.description">
+					</div>
+
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary" [disabled]="isSubmittingAddItem">
+							{{ isSubmittingAddItem ? ('COMMON.LOADING' | translate) : ('CATEGORIES.ITEMS.ADD_ITEM' | translate) }}
+						</button>
+						<button type="button" class="btn btn-secondary ms-2" (click)="closeAddItemForm()">{{ 'CATEGORIES.CANCEL' | translate }}</button>
+					</div>
+				</form>
+			</section>
+
+			<section class="edit-item-panel" *ngIf="isEditingItem && canAddItem()">
+				<h4 class="edit-item-title">{{ 'CATEGORIES.ITEMS.EDIT_ITEM' | translate }}</h4>
+				<div *ngIf="editItemErrorMessage" class="state-box state-error">{{ editItemErrorMessage }}</div>
+				<form class="row g-3" (ngSubmit)="submitEditItem()" #editItemForm="ngForm">
+					<div class="col-md-6">
+						<label class="form-label" for="editItemName">{{ 'CATEGORIES.ITEMS.NAME' | translate }}</label>
+						<input
+							id="editItemName"
+							type="text"
+							class="form-control"
+							name="name"
+							[(ngModel)]="editingItem.name"
+							required>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-label" for="editItemDescription">{{ 'CATEGORIES.ITEMS.DESCRIPTION' | translate }}</label>
+						<input
+							id="editItemDescription"
+							type="text"
+							class="form-control"
+							name="description"
+							[(ngModel)]="editingItem.description">
+					</div>
+
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary" [disabled]="isSubmittingEditItem">
+							{{ isSubmittingEditItem ? ('COMMON.LOADING' | translate) : ('CATEGORIES.ITEMS.UPDATE_ITEM' | translate) }}
+						</button>
+						<button type="button" class="btn btn-secondary ms-2" (click)="closeEditItemForm()">{{ 'CATEGORIES.CANCEL' | translate }}</button>
+					</div>
+				</form>
+			</section>
 		</section>
 	</section>
 </section>

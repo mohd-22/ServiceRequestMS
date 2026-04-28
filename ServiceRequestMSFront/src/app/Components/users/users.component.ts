@@ -21,6 +21,9 @@ export class UsersComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   readonly pageSize = 5;
+  sortBy = 'createdAt';
+  sortOrder: 'asc' | 'desc' = 'desc';
+  searchTerm = '';
   readonly roleOptions: Array<{ label: string; value: UserRoles }> = [
     { label: 'Admin', value: UserRoles.Admin },
     { label: 'Manager', value: UserRoles.Manager },
@@ -49,7 +52,7 @@ export class UsersComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userService.getPagedUsers(page, this.pageSize).subscribe({
+    this.userService.getPagedUsers(page, this.pageSize, this.sortBy, this.sortOrder, this.searchTerm).subscribe({
       next: (response) => {
         const data = response.data ?? [];
         const visibleUsers = this.role === 'Manager'
@@ -183,6 +186,34 @@ export class UsersComponent implements OnInit {
         console.error('Error adding user:', error);
       }
     });
+  }
+
+  setSort(field: string): void {
+    if (this.sortBy === field) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortOrder = 'asc';
+    }
+    this.loadUsers(1);
+  }
+
+  getSortIcon(field: string): string {
+    if (this.sortBy !== field) {
+      return '';
+    }
+    return this.sortOrder === 'asc' ? '↑' : '↓';
+  }
+
+  onSearch(): void {
+    this.currentPage = 1;
+    this.loadUsers(1);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadUsers(1);
   }
 
   private createEmptyUser(): UserRegistrationDto {

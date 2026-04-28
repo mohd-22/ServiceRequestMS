@@ -95,6 +95,15 @@
   padding: 0 16px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .toggle-btn {
   border: none;
   background: #1f2d3d;

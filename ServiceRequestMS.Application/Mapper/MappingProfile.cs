@@ -43,6 +43,8 @@ public class MappingProfile : Profile
     .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
     .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
 
-        CreateMap<User, UserDto>().ReverseMap();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedDate))
+            .ReverseMap();
     }
 }

@@ -16,7 +16,7 @@ namespace ServiceRequestMS.Core.Models
         public Item? CategoryItem { get; set; }
 
         [ForeignKey("CreatedBy")]
-        public User Requester { get; set; }
+        public User Requester { get; set; } = new User();
 
 
         public Guid? AssignedStaffId { get; set; }

@@ -87,9 +87,9 @@ namespace ServiceRequestMS.Api.Controllers
         }
 
         [HttpGet("PagedUser/{page}/{pageSize}")]
-        public async Task<ActionResult> GetPagedUsers(int page, int pageSize)
+        public async Task<ActionResult> GetPagedUsers(int page, int pageSize, string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
         {
-            var result = await _userService.GetPagedUsers(page, pageSize);
+            var result = await _userService.GetPagedUsers(page, pageSize, searchTerm ,sortBy, sortOrder);
             if (result.Success == false) return BadRequest(result);
             return Ok(result);
         }

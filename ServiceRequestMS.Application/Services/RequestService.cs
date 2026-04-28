@@ -36,22 +36,22 @@ public class RequestService : IRequestService
         return ApiResponse<CreateRequestDto>.SuccessResponse(dto,"Request Created Succesfully");
     }
 
-    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync()
+    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync(string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
-        var requests = await _unitOfWork.Requests.GetAllWithDetailsAsync();
+        var requests = await _unitOfWork.Requests.GetAllWithDetailsAsync(searchTerm,sortBy, sortOrder);
 
         return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponse(_mapper.Map<IEnumerable<RequestAdminDto>>(requests), "Requests Retrieved Succesfully");
 
     }
 
-    public async Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id)
+    public async Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var emp = await _unitOfWork.Users.AnyAsync(x => x.Id == Id && x.Role == UserRoles.Employee);
         if(emp == false)
         {
             return ApiResponse<IEnumerable<RequestForEmployeeDto>>.FailureResponse("Employee not found!");
         }
-        var requests = await _unitOfWork.Requests.GetRequestsByEmpIdAsync(Id);
+        var requests = await _unitOfWork.Requests.GetRequestsByEmpIdAsync(Id,searchTerm,sortBy, sortOrder);
 
         if(requests.Any() == false)
         {
@@ -63,14 +63,14 @@ public class RequestService : IRequestService
 
     }
 
-    public async Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid Id)
+    public async Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid Id, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var emp = await _unitOfWork.Users.AnyAsync(x => x.Id == Id && x.Role == UserRoles.Staff);
         if (emp == false)
         {
             return ApiResponse<IEnumerable<RequestForStaffDto>>.FailureResponse("Staff not found!");
         }
-        var requests = await _unitOfWork.Requests.GetRequestsByStaffIdAsync(Id);
+        var requests = await _unitOfWork.Requests.GetRequestsByStaffIdAsync(Id,searchTerm, sortBy, sortOrder);
         if (requests.Any() == false)
         {
             return ApiResponse<IEnumerable<RequestForStaffDto>>.SuccessResponse([], "Staff has no Requests assigned to him");
@@ -111,7 +111,7 @@ public class RequestService : IRequestService
         return ApiResponse<bool>.SuccessResponse(true, "Request Updated Succesfully");
     }
 
-    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize)
+    public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         if (pageNumber < 1)
         {
@@ -146,7 +146,7 @@ public class RequestService : IRequestService
         }
 
        
-        var requests = await _unitOfWork.Requests.GetPagedRequests(pageNumber, pageSize);
+        var requests = await _unitOfWork.Requests.GetPagedRequests(pageNumber, pageSize,searchTerm, sortBy, sortOrder);
 
       
         var mappedRequests = _mapper.Map<IEnumerable<RequestAdminDto>>(requests);

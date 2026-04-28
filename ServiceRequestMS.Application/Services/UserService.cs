@@ -62,7 +62,7 @@ namespace ServiceRequestMS.Application.Services
 
         }
 
-        public async Task<ApiResponse<IEnumerable<UserDto>>> GetPagedUsers(int pageNumber, int pageSize)
+        public async Task<ApiResponse<IEnumerable<UserDto>>> GetPagedUsers(int pageNumber, int pageSize, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
         {
             if (pageNumber < 1)
             {
@@ -97,7 +97,7 @@ namespace ServiceRequestMS.Application.Services
             }
 
 
-            var users = await _unitOfWork.Users.GetPagedUsers(pageNumber, pageSize);
+            var users = await _unitOfWork.Users.GetPagedUsers(pageNumber, pageSize,searchTerm, sortBy, sortOrder);
 
 
             var mappedUsers = _mapper.Map<IEnumerable<UserDto>>(users);

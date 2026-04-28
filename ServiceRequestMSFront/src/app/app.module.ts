@@ -12,6 +12,15 @@ import { LoginComponent } from './Components/login/login.component';
 import { UsersComponent } from './Components/users/users.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { LanguageSwitcherComponent } from './Components/language-switcher/language-switcher.component';
+import { CommentsComponent } from './Components/shared/comments/comments.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -22,12 +31,22 @@ import { AuthInterceptor } from './Interceptors/auth.interceptor';
     LoginComponent,
     UsersComponent,
     ProfileComponent,
+    LanguageSwitcherComponent,
+    CommentsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'en'
+    })
   ],
   providers: [
     {

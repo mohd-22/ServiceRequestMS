@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -18,9 +18,22 @@ export class UserService {
       .pipe(map((response) => response.data ?? []));
   }
 
-  getPagedUsers(page: number, pageSize: number = 5): Observable<ApiResponse<UserDto[]>> {
+  getPagedUsers(page: number, pageSize: number = 5, sortBy?: string, sortOrder: 'asc' | 'desc' = 'desc', searchTerm?: string): Observable<ApiResponse<UserDto[]>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (searchTerm) {
+      params = params.set('searchTerm', searchTerm);
+    }
+    if (sortBy) {
+      params = params.set('sortBy', sortBy);
+    }
+    params = params.set('sortOrder', sortOrder);
+
     return this.http.get<ApiResponse<UserDto[]>>(
-      `${environment.apiUrl}/${this.apiUrl}/PagedUser/${page}/${pageSize}`
+      `${environment.apiUrl}/${this.apiUrl}/PagedUser/${page}/${pageSize}`,
+      { params }
     );
   }
 

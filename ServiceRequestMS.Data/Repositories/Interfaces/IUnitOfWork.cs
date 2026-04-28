@@ -8,7 +8,7 @@ namespace ServiceRequestMS.Data.Repositories.Interfaces
     {
         IUserRepository Users { get; }
         IGenericRepository<Attachment> Attachments { get; }
-        IGenericRepository<Comment> Comments { get; }
+        ICommentRepository Comments { get; }
         IGenericRepository<Item> Items { get; }
         ICategoryRepository Categories { get; }
         IRequestRepository Requests { get; }

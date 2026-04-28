@@ -58,6 +58,29 @@
 	background: #f9fcff;
 }
 
+.search-panel {
+	margin-bottom: 16px;
+	padding: 14px;
+	border: 1px solid #d9e8ef;
+	border-radius: 10px;
+	background: #f5f9fc;
+}
+
+.search-input-group {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.search-input-group .form-control {
+	flex: 1;
+	min-width: 200px;
+}
+
+.search-input-group .btn {
+	white-space: nowrap;
+}
+
 .add-user-title {
 	margin: 0 0 12px;
 	font-size: 1.1rem;
@@ -103,6 +126,44 @@
 	background: #f4f8fb;
 	color: #355164;
 	border-bottom: 1px solid #d9e8ef;
+}
+
+.custom-table thead th.sortable {
+	cursor: pointer;
+	user-select: none;
+}
+
+.sort-icon {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 8px;
+	vertical-align: middle;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid #9fbfcc;
+	opacity: 0.45;
+	transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.custom-table thead th.sortable:hover .sort-icon {
+	opacity: 0.8;
+}
+
+.custom-table thead th.sortable.sorted .sort-icon {
+	opacity: 1;
+}
+
+.custom-table thead th.sortable.asc .sort-icon {
+	border-top-color: #0a6c84;
+	border-bottom: none;
+	transform: translateY(1px);
+}
+
+.custom-table thead th.sortable.desc .sort-icon {
+	border-top-color: transparent;
+	border-bottom: 6px solid #0a6c84;
+	transform: translateY(-1px);
 }
 
 .custom-table tbody tr {

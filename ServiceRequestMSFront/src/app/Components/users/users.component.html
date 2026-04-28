@@ -1,24 +1,24 @@
 <section class="users-page">
 	<header class="header-card">
-		<h1 class="page-title">Users</h1>
-		<p class="page-subtitle"><span>{{ role }}</span> view for all registered users.</p>
+		<h1 class="page-title">{{ 'USERS.TITLE' | translate }}</h1>
+		<p class="page-subtitle"><span>{{ role }}</span> {{ 'USERS.VIEW' | translate }}</p>
 	</header>
 
 	<section class="table-card">
 		<div class="table-header-row">
-			<h2 class="table-title">Users List</h2>
+			<h2 class="table-title">{{ 'USERS.LIST_TITLE' | translate }}</h2>
 			<div class="table-actions">
-				<span class="count-pill">{{ getDisplayedUserCount() }} total</span>
-				<button *ngIf="canAddUser()" type="button" class="btn btn-primary btn-sm" (click)="openAddUserForm()">Add User</button>
+				<span class="count-pill">{{ getDisplayedUserCount() }} {{ 'USERS.TOTAL' | translate }}</span>
+				<button *ngIf="canAddUser()" type="button" class="btn btn-primary btn-sm" (click)="openAddUserForm()">{{ 'USERS.ADD_USER' | translate }}</button>
 			</div>
 		</div>
 
 		<section class="add-user-panel" *ngIf="isAddingUser && canAddUser()">
-			<h3 class="add-user-title">Add New User</h3>
+			<h3 class="add-user-title">{{ 'USERS.ADD_USER' | translate }}</h3>
 			<div *ngIf="addUserErrorMessage" class="state-box state-error">{{ addUserErrorMessage }}</div>
 			<form class="row g-3" (ngSubmit)="submitAddUser()" #addUserForm="ngForm">
 				<div class="col-md-6">
-					<label class="form-label" for="fullName">Full Name</label>
+					<label class="form-label" for="fullName">{{ 'USERS.FULL_NAME' | translate }}</label>
 					<input
 						id="fullName"
 						type="text"
@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label" for="userName">User Name</label>
+					<label class="form-label" for="userName">{{ 'USERS.USER_NAME' | translate }}</label>
 					<input
 						id="userName"
 						type="text"
@@ -40,7 +40,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label" for="email">Email</label>
+					<label class="form-label" for="email">{{ 'USERS.EMAIL' | translate }}</label>
 					<input
 						id="email"
 						type="email"
@@ -51,7 +51,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label" for="phoneNumber">Phone Number</label>
+					<label class="form-label" for="phoneNumber">{{ 'USERS.PHONE' | translate }}</label>
 					<input
 						id="phoneNumber"
 						type="text"
@@ -62,7 +62,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label" for="role">Role</label>
+					<label class="form-label" for="role">{{ 'USERS.ROLE' | translate }}</label>
 					<select
 						id="role"
 						class="form-select"
@@ -74,7 +74,7 @@
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label" for="password">Password</label>
+					<label class="form-label" for="password">{{ 'USERS.PASSWORD' | translate }}</label>
 					<input
 						id="password"
 						type="password"
@@ -89,23 +89,50 @@
 						type="submit"
 						class="btn btn-primary"
 						[disabled]="addUserForm.invalid || isSubmittingAddUser">
-						{{ isSubmittingAddUser ? 'Saving...' : 'Save User' }}
+						{{ isSubmittingAddUser ? ('COMMON.LOADING' | translate) : ('USERS.SAVE_USER' | translate) }}
 					</button>
 					<button
 						type="button"
 						class="btn btn-outline-secondary"
 						[disabled]="isSubmittingAddUser"
 						(click)="closeAddUserForm()">
-						Cancel
+						{{ 'USERS.CANCEL' | translate }}
 					</button>
 				</div>
 			</form>
 		</section>
 
-		<div *ngIf="isLoading" class="state-box state-loading">Loading users...</div>
+		<div class="search-panel">
+			<div class="search-input-group">
+				<input
+					type="text"
+					class="form-control"
+					placeholder="{{ 'USERS.SEARCH' | translate }}"
+					[(ngModel)]="searchTerm"
+					(keyup.enter)="onSearch()"
+					[disabled]="isLoading">
+				<button
+					type="button"
+					class="btn btn-outline-secondary"
+					(click)="onSearch()"
+					[disabled]="isLoading">
+					{{ 'COMMON.SEARCH' | translate }}
+				</button>
+				<button
+					type="button"
+					class="btn btn-outline-secondary"
+					(click)="clearSearch()"
+					[disabled]="isLoading"
+					*ngIf="searchTerm">
+					{{ 'COMMON.CLEAR' | translate }}
+				</button>
+			</div>
+		</div>
+
+		<div *ngIf="isLoading" class="state-box state-loading">{{ 'COMMON.LOADING' | translate }}</div>
 		<div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
 		<div *ngIf="!isLoading && !errorMessage && displayedUsers.length === 0" class="state-box state-empty">
-			No users found.
+			{{ 'USERS.NO_USERS' | translate }}
 		</div>
 
 		<div class="table-responsive" *ngIf="!isLoading && !errorMessage && displayedUsers.length > 0">
@@ -113,14 +140,14 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Full Name</th>
-						<th>User Name</th>
-						<th>Email</th>
-						<th>Phone</th>
-						<th>Role</th>
-						<th>Status</th>
-                        <th *ngIf="canAddUser()">Action</th>
-                        <th>Created</th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'fullName', 'asc': sortBy === 'fullName' && sortOrder === 'asc', 'desc': sortBy === 'fullName' && sortOrder === 'desc'}" (click)="setSort('fullName')">{{ 'USERS.FULL_NAME' | translate }} <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'userName', 'asc': sortBy === 'userName' && sortOrder === 'asc', 'desc': sortBy === 'userName' && sortOrder === 'desc'}" (click)="setSort('userName')">{{ 'USERS.USER_NAME' | translate }} <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'email', 'asc': sortBy === 'email' && sortOrder === 'asc', 'desc': sortBy === 'email' && sortOrder === 'desc'}" (click)="setSort('email')">{{ 'USERS.EMAIL' | translate }} <span class="sort-icon"></span></th>
+						<th>{{ 'USERS.PHONE' | translate }}</th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'role', 'asc': sortBy === 'role' && sortOrder === 'asc', 'desc': sortBy === 'role' && sortOrder === 'desc'}" (click)="setSort('role')">{{ 'USERS.ROLE' | translate }} <span class="sort-icon"></span></th>
+						<th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">{{ 'USERS.STATUS' | translate }} <span class="sort-icon"></span></th>
+                        <th *ngIf="canAddUser()">{{ 'USERS.ACTION' | translate }}</th>
+                        <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdAt', 'asc': sortBy === 'createdAt' && sortOrder === 'asc', 'desc': sortBy === 'createdAt' && sortOrder === 'desc'}" (click)="setSort('createdAt')">{{ 'USERS.CREATED' | translate }} <span class="sort-icon"></span></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -131,7 +158,7 @@
 						<td>{{ user.email }}</td>
 						<td>{{ user.phoneNumber || '-' }}</td>
 						<td>{{ user.role }}</td>
-						<td><span [class]="getStatusClass(user.isActive)">{{ user.isActive ? 'Active' : 'Inactive' }}</span></td>
+						<td><span [class]="getStatusClass(user.isActive)">{{ user.isActive ? ('USERS.ACTIVE' | translate) : ('USERS.INACTIVE' | translate) }}</span></td>
 						<td *ngIf="canManageUserStatus()">
 							<button
 								type="button"
@@ -139,7 +166,7 @@
 								[ngClass]="user.isActive ? 'btn-outline-danger' : 'btn-outline-success'"
 								[disabled]="!canManageUserStatus() || isUserActionLoading(user.id)"
 								(click)="toggleUserStatus(user)">
-								{{ !canManageUserStatus() ? 'Admin only' : (isUserActionLoading(user.id) ? 'Saving...' : (user.isActive ? 'Deactivate' : 'Activate')) }}
+								{{ !canManageUserStatus() ? ('USERS.ADMIN_ONLY' | translate) : (isUserActionLoading(user.id) ? ('COMMON.LOADING' | translate) : (user.isActive ? ('USERS.DEACTIVATE' | translate) : ('USERS.ACTIVATE' | translate))) }}
 							</button>
 						</td>
 						<td>{{ formatDate(user.createdAt) }}</td>
@@ -154,15 +181,15 @@
 				class="btn btn-sm btn-outline-secondary"
 				(click)="goToPreviousPage()"
 				[disabled]="currentPage <= 1">
-				Previous
+				{{ 'COMMON.PREVIOUS' | translate }}
 			</button>
-			<span class="page-indicator">Page {{ currentPage }} / {{ totalPages }}</span>
+			<span class="page-indicator">{{ 'COMMON.PAGE' | translate }} {{ currentPage }} / {{ totalPages }}</span>
 			<button
 				type="button"
 				class="btn btn-sm btn-outline-secondary"
 				(click)="goToNextPage()"
 				[disabled]="currentPage >= totalPages">
-				Next
+				{{ 'COMMON.NEXT' | translate }}
 			</button>
 		</div>
 	</section>
