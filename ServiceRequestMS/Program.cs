@@ -72,6 +72,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IStaffService, StaffService>();

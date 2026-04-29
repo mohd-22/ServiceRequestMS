@@ -155,3 +155,9 @@ export interface CreateCommentDto {
     text: string;
     requestId: string;
 }
+
+export interface AttachmentDto {
+    id: string;
+    fileName: string;
+    filePath: string;
+}

@@ -6,7 +6,7 @@ namespace ServiceRequestMS.Application.Services.Interfaces;
 public interface IRequestService
 {
     //Create
-    Task<ApiResponse<CreateRequestDto>> CreateRequest(CreateRequestDto ReqDto);
+    Task<ApiResponse<RequestDto>> CreateRequest(CreateRequestDto ReqDto);
 
     //Read 
     Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync(string? searchTerm = null,string ? sortBy = null, string sortOrder = "desc");

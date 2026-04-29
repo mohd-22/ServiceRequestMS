@@ -95,6 +95,17 @@
           </select>
         </div>
 
+        <div class="col-12 col-md-6">
+          <label for="requestAttachment" class="form-label">Attachment</label>
+          <input
+            id="requestAttachment"
+            name="requestAttachment"
+            type="file"
+            class="form-control"
+            (change)="onFileSelected($event)">
+          <small class="text-muted d-block mt-1" *ngIf="selectedFile">Selected: {{ selectedFile.name }}</small>
+        </div>
+
         <div class="col-12 form-actions">
           <button type="submit" class="btn btn-primary" [disabled]="addRequestForm.invalid || isSubmittingAddRequest">
             {{ isSubmittingAddRequest ? ('COMMON.LOADING' | translate) : ('REQUESTS.SUBMIT' | translate) }}
@@ -163,7 +174,7 @@
             <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdDate', 'asc': sortBy === 'createdDate' && sortOrder === 'asc', 'desc': sortBy === 'createdDate' && sortOrder === 'desc'}" (click)="setSort('createdDate')">
               {{ 'USERS.CREATED' | translate }} <span class="sort-icon"></span>
             </th>
-            <th>{{ 'COMMON.COMMENTS' | translate }}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -244,13 +255,22 @@
             <td>{{ request.itemName }}</td>
             <td>{{ formatDate(request.createdDate) }}</td>
             <td>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-primary"
-                (click)="viewComments(request.id)"
-                title="{{ 'COMMON.COMMENTS' | translate }}">
-                <i class="fas fa-comments"></i>
-              </button>
+              <div class="d-flex gap-1">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="viewAttachments(request.id)"
+                  title="Attachments">
+                  <i class="fas fa-paperclip"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="viewComments(request.id)"
+                  title="{{ 'COMMON.COMMENTS' | translate }}">
+                  <i class="fas fa-comments"></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -265,3 +285,9 @@
     (closeModal)="closeCommentsModal()">
   </app-comments>
 </section>
+
+<app-attachments
+  [requestId]="activeAttachmentsRequestId"
+  [isVisible]="isAttachmentsModalVisible"
+  (closeModal)="closeAttachmentsModal()">
+</app-attachments>

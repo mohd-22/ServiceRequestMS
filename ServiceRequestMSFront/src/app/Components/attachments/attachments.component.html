@@ -1,0 +1,23 @@
+<div *ngIf="isVisible" class="attachments-backdrop">
+  <div class="attachments-dialog">
+    <div class="attachments-content">
+      <div class="modal-header p-3">
+        <h5 class="modal-title">Attachments</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="isLoading" class="state-box state-loading">Loading attachments...</div>
+        <div *ngIf="!isLoading && errorMessage" class="state-box state-error">{{ errorMessage }}</div>
+        <div *ngIf="!isLoading && attachments.length === 0" class="state-box state-empty">No attachments found.</div>
+        <ul class="list-group" *ngIf="!isLoading && attachments.length > 0">
+          <li class="list-group-item" *ngFor="let a of attachments">
+            <a href="#" (click)="downloadAttachment(a, $event)">{{ a.fileName }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer p-3">
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,7 +19,7 @@ public class RequestService : IRequestService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<ApiResponse<CreateRequestDto>> CreateRequest(CreateRequestDto dto)
+    public async Task<ApiResponse<RequestDto>> CreateRequest(CreateRequestDto dto)
     {
 
         var request = new Request
@@ -33,7 +33,12 @@ public class RequestService : IRequestService
 
         await _unitOfWork.Requests.AddAsync(request);
         await _unitOfWork.CompleteAsync();
-        return ApiResponse<CreateRequestDto>.SuccessResponse(dto,"Request Created Succesfully");
+        return ApiResponse<RequestDto>.SuccessResponse(new RequestDto
+        {
+            Id = request.Id,
+            Title = request.Title,
+            Status = request.Status
+        }, "Request Created Succesfully");
     }
 
     public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync(string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")

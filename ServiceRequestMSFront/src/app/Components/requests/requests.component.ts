@@ -34,12 +34,15 @@ export class RequestsComponent {
   isAddingRequest = false;
   isSubmittingAddRequest = false;
   selectedCategoryId = '';
+  selectedFile: File | null = null;
   activeAssignRequestId: string | null = null;
   activeStatusRequestId: string | null = null;
   selectedStaffByRequestId: Record<string, string> = {};
   selectedNextStatusByRequestId: Record<string, string> = {};
   isCommentsModalVisible = false;
   activeCommentsRequestId: string | null = null;
+  isAttachmentsModalVisible = false;
+  activeAttachmentsRequestId: string | null = null;
   newRequest: CreateRequestDto = {
     title: '',
     description: '',
@@ -155,6 +158,11 @@ export class RequestsComponent {
     this.resetAddRequestForm();
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files && input.files.length > 0 ? input.files[0] : null;
+  }
+
   onCategoryChange(): void {
     this.newRequest.categoryItemId = '';
     this.categoryItems = [];
@@ -200,12 +208,32 @@ export class RequestsComponent {
     this.addRequestSuccessMessage = '';
 
     this.requestService.createRequest(payload).subscribe({
-      next: () => {
-        this.isSubmittingAddRequest = false;
-        this.addRequestSuccessMessage = 'Request added successfully.';
-        this.isAddingRequest = false;
-        this.resetAddRequestForm();
-        this.loadRequests(1);
+      next: (createdRequest) => {
+        if (!this.selectedFile) {
+          this.isSubmittingAddRequest = false;
+          this.addRequestSuccessMessage = 'Request added successfully.';
+          this.isAddingRequest = false;
+          this.resetAddRequestForm();
+          this.loadRequests(1);
+          return;
+        }
+
+        this.requestService.uploadAttachment(createdRequest.id, this.selectedFile).subscribe({
+          next: () => {
+            this.isSubmittingAddRequest = false;
+            this.addRequestSuccessMessage = 'Request and attachment added successfully.';
+            this.isAddingRequest = false;
+            this.resetAddRequestForm();
+            this.loadRequests(1);
+          },
+          error: (uploadError: unknown) => {
+            this.isSubmittingAddRequest = false;
+            this.addRequestErrorMessage = 'Request was created, but the file upload failed.';
+            console.error('Error uploading request attachment:', uploadError);
+            this.isAddingRequest = false;
+            this.loadRequests(1);
+          }
+        });
       },
       error: (error: unknown) => {
         this.isSubmittingAddRequest = false;
@@ -425,6 +453,16 @@ export class RequestsComponent {
     this.activeCommentsRequestId = null;
   }
 
+  viewAttachments(requestId: string): void {
+    this.activeAttachmentsRequestId = requestId;
+    this.isAttachmentsModalVisible = true;
+  }
+
+  closeAttachmentsModal(): void {
+    this.isAttachmentsModalVisible = false;
+    this.activeAttachmentsRequestId = null;
+  }
+
   private loadCategories(): void {
     this.isLoadingCategories = true;
     this.addRequestErrorMessage = '';
@@ -445,6 +483,7 @@ export class RequestsComponent {
   private resetAddRequestForm(): void {
     this.selectedCategoryId = '';
     this.categoryItems = [];
+    this.selectedFile = null;
     this.newRequest = {
       title: '',
       description: '',
