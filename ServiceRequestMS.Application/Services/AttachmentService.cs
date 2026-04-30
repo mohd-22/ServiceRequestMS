@@ -5,9 +5,6 @@ using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.Data.Repositories.Interfaces;
-using System.Net;
-using System.Security.Claims;
-
 namespace ServiceRequestMS.Application.Services
 {
     public class AttachmentService : IAttachmentService
@@ -69,7 +66,6 @@ namespace ServiceRequestMS.Application.Services
             }).ToList();
             return ApiResponse<IEnumerable<AttachmentDto>>.SuccessResponse(attachmentDtos, "Attachments retrieved successfully");
             }
-
         public async Task<(byte[] fileBytes, string contentType, string fileName)> DownloadFile(Guid id)
         {
             var attachment = await _unitOfWork.Attachments.GetByIdAsync(id);
@@ -81,8 +77,28 @@ namespace ServiceRequestMS.Application.Services
             var fileBytes = await System.IO.File.ReadAllBytesAsync(fullPath);
             return (fileBytes, "application/octet-stream", attachment.FileName);
         }
+        public async Task<ApiResponse<bool>> DeleteAttachment(Guid id)
+        {
+            var attachment = await _unitOfWork.Attachments.GetByIdAsync(id);
+            if (attachment == null)
+            {
+                return ApiResponse<bool>.FailureResponse("Attachment not found");
+            }
 
+          
+            var fullPath = Path.Combine(_env.WebRootPath, attachment.FilePath);
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
 
+           
+            _unitOfWork.Attachments.Delete(attachment);
+             await _unitOfWork.CompleteAsync();
+
+            
+            return ApiResponse<bool>.SuccessResponse(true, "Attachment deleted successfully");
+        }
 
     }
 }

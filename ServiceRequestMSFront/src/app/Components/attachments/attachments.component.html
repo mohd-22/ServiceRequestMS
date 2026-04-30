@@ -12,6 +12,9 @@
         <ul class="list-group" *ngIf="!isLoading && attachments.length > 0">
           <li class="list-group-item" *ngFor="let a of attachments">
             <a href="#" (click)="downloadAttachment(a, $event)">{{ a.fileName }}</a>
+            <button type="button" class="btn btn-sm btn-outline-danger ms-2" title="Delete" (click)="deleteAttachment(a)" [disabled]="deletingAttachmentId === a.id">
+              <i class="fas fa-trash-alt"></i>
+            </button>
           </li>
         </ul>
       </div>

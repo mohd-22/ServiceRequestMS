@@ -1,8 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceRequestMS.data.Data;
 using ServiceRequestMS.Data.Repositories.Interfaces;
-using System;
 using System.Linq.Expressions;
 
 public class GenericRepository <T> : IGenericRepository<T> where T : class

@@ -5,7 +5,6 @@ public class ApiResponse<T>
     public string Message { get; set; } = string.Empty;
     public int Page { get; set; }
     public int TotalPages { get; set; }
-
     public T? Data { get; set; }
     public List<string>? Errors { get; set; }
 
@@ -16,9 +15,7 @@ public class ApiResponse<T>
         Data = data;
         Message = message;
         Errors = null;
-    }
-
-  
+    }  
     public ApiResponse(string message, List<string>? errors = null)
     {
         Success = false;
@@ -33,9 +30,7 @@ public class ApiResponse<T>
         Page = page;
         Data = data;
         TotalPages = totalPages;
-    }
-
-   
+    }   
     public static ApiResponse<T> SuccessResponse(T data, string message = "Operation completed successfully")
     {
         return new ApiResponse<T>(data, message);
@@ -46,7 +41,6 @@ public class ApiResponse<T>
         return new ApiResponse<T>(data, page, message, totalPages);
 
     }
-
     public static ApiResponse<T> FailureResponse(string message, List<string>? errors = null)
     {
         return new ApiResponse<T>(message, errors);

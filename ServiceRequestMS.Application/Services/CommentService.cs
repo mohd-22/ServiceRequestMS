@@ -3,12 +3,6 @@ using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.Data.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ServiceRequestMS.Application.Services
 {
     public class CommentService : ICommentService
@@ -43,7 +37,6 @@ namespace ServiceRequestMS.Application.Services
 
             return ApiResponse<IEnumerable<CommentReadDto>>.SuccessResponse(commentDtos, "Comments Retrieved Successfully");
         }
-
         public async Task<ApiResponse<bool>> DeleteComment(Guid commentId)
         {
             var comment = await _unitOfWork.Comments.GetByIdAsync(commentId);

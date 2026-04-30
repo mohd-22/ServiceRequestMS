@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceRequestMS.Application.Services.Interfaces
+namespace ServiceRequestMS.Application.Services.Interfaces;
+public interface IAttachmentService
 {
-    public interface IAttachmentService
-    {
-        Task<(byte[] fileBytes, string contentType, string fileName)> DownloadFile(Guid id);
-        Task<ApiResponse<IEnumerable<AttachmentDto>>> GetAttachmentsByRequest(Guid requestId);
-        Task<ApiResponse<bool>> UploadAttachment(Guid userId,Guid requestId, IFormFile file);
-    }
+    Task<(byte[] fileBytes, string contentType, string fileName)> DownloadFile(Guid id);
+    Task<ApiResponse<IEnumerable<AttachmentDto>>> GetAttachmentsByRequest(Guid requestId);
+    Task<ApiResponse<bool>> UploadAttachment(Guid userId,Guid requestId, IFormFile file);
+    Task<ApiResponse<bool>> DeleteAttachment(Guid id);
 }

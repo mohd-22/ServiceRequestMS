@@ -41,7 +41,6 @@ public class StaffService : IStaffService
         return ApiResponse<bool>.FailureResponse("you cant assign staff to a request unless it 'New' or 'Paused' ");
 
     }
-
     public async Task<ApiResponse<bool>> UpdateStaffRequestStatusAsync(Guid requestId, RequestStatus nextStatus, string? staffNotes)
     {
         var request = await _unitOfWork.Requests.GetByIdAsync(requestId);

@@ -39,6 +39,7 @@ export class RequestsComponent {
   activeStatusRequestId: string | null = null;
   selectedStaffByRequestId: Record<string, string> = {};
   selectedNextStatusByRequestId: Record<string, string> = {};
+  activeDeleteRequestId: string | null = null;
   isCommentsModalVisible = false;
   activeCommentsRequestId: string | null = null;
   isAttachmentsModalVisible = false;
@@ -330,6 +331,40 @@ export class RequestsComponent {
 
   canChangeStaffStatus(request: any): boolean {
     return this.role === 'Staff' && this.getStaffStatusOptions(request).length > 0;
+  }
+
+  canDeleteRequest(request: RequestAdminDto | any): boolean {
+    return this.role === 'Employee' && this.normalizeStatus(request.status) === 'new';
+  }
+
+  deleteRequest(request: RequestAdminDto | any): void {
+    if (!this.canDeleteRequest(request) || this.activeDeleteRequestId) {
+      return;
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete this request?');
+    if (!confirmed) {
+      return;
+    }
+
+    this.activeDeleteRequestId = request.id;
+    this.errorMessage = '';
+
+    this.requestService.deleteRequest(request.id).subscribe({
+      next: () => {
+        this.activeDeleteRequestId = null;
+        this.loadRequests(this.currentPage);
+      },
+      error: (error: unknown) => {
+        this.activeDeleteRequestId = null;
+        this.errorMessage = 'Could not delete request.';
+        console.error('Error deleting request:', error);
+      }
+    });
+  }
+
+  isDeleteLoading(requestId: string): boolean {
+    return this.activeDeleteRequestId === requestId;
   }
 
   assignStaff(request: RequestAdminDto): void {

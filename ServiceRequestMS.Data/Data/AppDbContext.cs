@@ -1,10 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Http; 
+﻿using Microsoft.AspNetCore.Http; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.Data.Data;
-using ServiceRequestMS.core.Models.Enums;
 using ServiceRequestMS.Core.Models;
 using System.Security.Claims;
 namespace ServiceRequestMS.data.Data;
@@ -56,7 +54,6 @@ public class AppDbContext : DbContext
 
         return base.SaveChangesAsync(cancellationToken);
     }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Request> Requests { get; set; }
     public DbSet<Comment> Comments { get; set; }

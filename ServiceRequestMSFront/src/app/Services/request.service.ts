@@ -70,6 +70,14 @@ export class RequestService {
       .pipe(map((response) => response.data as RequestDto));
   }
 
+  deleteRequest(requestId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<boolean>>(`${environment.apiUrl}/${this.apiUrl}`, {
+        params: { Id: requestId }
+      })
+      .pipe(map(() => void 0));
+  }
+
   uploadAttachment(requestId: string, file: File): Observable<void> {
     const formData = new FormData();
     formData.append('file', file);
@@ -112,6 +120,12 @@ export class RequestService {
     return this.http.get(`${environment.apiUrl}/Attachment/download/${attachmentId}`, {
       responseType: 'blob'
     });
+  }
+
+  deleteAttachment(attachmentId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<boolean>>(`${environment.apiUrl}/Attachment/${attachmentId}`)
+      .pipe(map(() => void 0));
   }
   // getRequestsForAdmin(): Observable<RequestAdminDto[]> {
   //   return this.http

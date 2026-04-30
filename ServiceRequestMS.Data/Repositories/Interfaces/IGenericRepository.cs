@@ -1,6 +1,4 @@
-﻿using ServiceRequestMS.Core.Models;
-using System.Linq.Expressions;
-
+﻿using System.Linq.Expressions;
 namespace ServiceRequestMS.Data.Repositories.Interfaces;
 public interface IGenericRepository <T> where T : class
 {

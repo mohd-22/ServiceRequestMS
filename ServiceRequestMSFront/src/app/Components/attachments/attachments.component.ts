@@ -16,6 +16,7 @@ export class AttachmentsComponent implements OnChanges {
   attachments: AttachmentDto[] = [];
   isLoading = false;
   errorMessage = '';
+  deletingAttachmentId: string | null = null;
 
   constructor(private requestService: RequestService) { }
 
@@ -68,6 +69,26 @@ export class AttachmentsComponent implements OnChanges {
       error: (error) => {
         console.error('Error downloading attachment:', error);
         this.errorMessage = 'Could not download attachment.';
+      }
+    });
+  }
+
+  deleteAttachment(attachment: AttachmentDto): void {
+    if (!confirm('Are you sure you want to delete this attachment?')) {
+      return;
+    }
+
+    this.deletingAttachmentId = attachment.id;
+    this.errorMessage = '';
+    this.requestService.deleteAttachment(attachment.id).subscribe({
+      next: () => {
+        this.attachments = this.attachments.filter(a => a.id !== attachment.id);
+        this.deletingAttachmentId = null;
+      },
+      error: (error) => {
+        console.error('Error deleting attachment:', error);
+        this.errorMessage = 'Could not delete attachment.';
+        this.deletingAttachmentId = null;
       }
     });
   }

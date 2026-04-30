@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceRequestMS.Application.DTOs
+﻿namespace ServiceRequestMS.Application.DTOs;
+public class AttachmentDto
 {
-    public class AttachmentDto
-    {
-        public Guid Id { get;  set; }
-        public string FileName { get; set; } = string.Empty;
-        public string FilePath { get; set; } = string.Empty;
-    }
+    public Guid Id { get;  set; }
+    public string FileName { get; set; } = string.Empty;
+    public string FilePath { get; set; } = string.Empty;
 }

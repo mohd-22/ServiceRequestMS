@@ -160,7 +160,7 @@
             <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'" class="sortable" [ngClass]="{'sorted': sortBy === 'requester', 'asc': sortBy === 'requester' && sortOrder === 'asc', 'desc': sortBy === 'requester' && sortOrder === 'desc'}" (click)="setSort('requester')">
               {{ 'USERS.REQUESTER' | translate }} <span class="sort-icon"></span>
             </th>
-            <th *ngIf="role === 'Staff'">{{ 'USERS.STAFFID' | translate }}</th>
+            <th *ngIf="role === 'Staff'">{{ 'USERS.PHONE' | translate }}</th>
         <th *ngIf=" role == 'Admin' || role === 'Manager' "> {{ 'USERS.STAFFID' | translate }}</th>
             <th *ngIf=" role !== 'Staff'">{{ 'USERS.ASSIGNED_STAFF' | translate }}</th>
             <th *ngIf="role === 'Manager'">{{ 'COMMON.ASSIGN' | translate }}</th>
@@ -269,6 +269,15 @@
                   (click)="viewComments(request.id)"
                   title="{{ 'COMMON.COMMENTS' | translate }}">
                   <i class="fas fa-comments"></i>
+                </button>
+                <button
+                  *ngIf="canDeleteRequest(request)"
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  [disabled]="isDeleteLoading(request.id)"
+                  (click)="deleteRequest(request)"
+                  title="Delete request">
+                  <i class="fas fa-trash"></i>
                 </button>
               </div>
             </td>
