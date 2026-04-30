@@ -14,7 +14,6 @@ namespace ServiceRequestMS.Services
 {
     public class AuthService : IAuthService
     {
-        
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -23,7 +22,6 @@ namespace ServiceRequestMS.Services
             _configuration = configuration;
             _unitOfWork = unitOfWork;
         }
-
         public async Task<ApiResponse<string>> LoginAsync(LoginDto request)
         {
             var user = await _unitOfWork.Users.FindAsync(u => u.UserName == request.UserName);
@@ -42,7 +40,6 @@ namespace ServiceRequestMS.Services
 
             return ApiResponse<string>.SuccessResponse(CreateToken(user),"Login successful.");
         }
-
         private string CreateToken(User user)
         {
             var Claims = new List<Claim>

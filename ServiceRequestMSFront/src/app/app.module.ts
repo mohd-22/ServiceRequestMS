@@ -17,6 +17,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { LanguageSwitcherComponent } from './Components/language-switcher/language-switcher.component';
 import { CommentsComponent } from './Components/shared/comments/comments.component';
+import { AttachmentsComponent } from './Components/attachments/attachments.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -33,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProfileComponent,
     LanguageSwitcherComponent,
     CommentsComponent,
+    AttachmentsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,6 @@
 ﻿
 using ServiceRequestMS.Data.Repositories.Interfaces;
 using ServiceRequestMS.core.Models;
-using ServiceRequestMS.Core.Models;
 using ServiceRequestMS.data.Data;
 
 namespace ServiceRequestMS.Data.Repositories
@@ -15,8 +14,7 @@ namespace ServiceRequestMS.Data.Repositories
         public ICommentRepository Comments { get; }
         public IGenericRepository<Item> Items { get; }
         public ICategoryRepository Categories { get; }
-        public IRequestRepository Requests { get; }
- 
+        public IRequestRepository Requests { get; } 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
@@ -27,15 +25,9 @@ namespace ServiceRequestMS.Data.Repositories
             Categories = new CategoryRepository(_context);
             Requests = new RequestRepository(_context);
         }
-
         public async Task<int> CompleteAsync()
         {
             return await _context.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

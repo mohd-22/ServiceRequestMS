@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ApiResponse, CreateRequestDto, RequestAdminDto, RequestForEmployeeDto, RequestForStaffDto } from '../Models';
+import { ApiResponse, CreateRequestDto, RequestAdminDto, RequestDto, RequestForEmployeeDto, RequestForStaffDto, AttachmentDto } from '../Models';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -64,9 +64,26 @@ export class RequestService {
       .pipe(map((response) => response.data ?? []));
   }
 
-  createRequest(payload: CreateRequestDto): Observable<void> {
+  createRequest(payload: CreateRequestDto): Observable<RequestDto> {
     return this.http
-      .post<ApiResponse<CreateRequestDto>>(`${environment.apiUrl}/${this.apiUrl}/CreateRequest`, payload)
+      .post<ApiResponse<RequestDto>>(`${environment.apiUrl}/${this.apiUrl}/CreateRequest`, payload)
+      .pipe(map((response) => response.data as RequestDto));
+  }
+
+  deleteRequest(requestId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<boolean>>(`${environment.apiUrl}/${this.apiUrl}`, {
+        params: { Id: requestId }
+      })
+      .pipe(map(() => void 0));
+  }
+
+  uploadAttachment(requestId: string, file: File): Observable<void> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http
+      .post<ApiResponse<boolean>>(`${environment.apiUrl}/Attachment/UploadAttachment/${requestId}`, formData)
       .pipe(map(() => void 0));
   }
 
@@ -90,6 +107,24 @@ export class RequestService {
           ...(staffNotes ? { staffNotes } : {})
         }
       })
+      .pipe(map(() => void 0));
+  }
+
+  getAttachmentsByRequest(requestId: string): Observable<AttachmentDto[]> {
+    return this.http
+      .get<ApiResponse<AttachmentDto[]>>(`${environment.apiUrl}/Attachment/request/${requestId}`)
+      .pipe(map((response) => response.data ?? []));
+  }
+
+  downloadAttachment(attachmentId: string): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/Attachment/download/${attachmentId}`, {
+      responseType: 'blob'
+    });
+  }
+
+  deleteAttachment(attachmentId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<boolean>>(`${environment.apiUrl}/Attachment/${attachmentId}`)
       .pipe(map(() => void 0));
   }
   // getRequestsForAdmin(): Observable<RequestAdminDto[]> {

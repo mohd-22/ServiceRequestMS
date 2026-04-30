@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.DTOs;
-using ServiceRequestMS.Application.Services;
 using ServiceRequestMS.Application.Services.Interfaces;
-
 namespace ServiceRequestMS.Api.Controllers;
 
 [Route("api/[controller]")]
@@ -23,6 +20,7 @@ public class ItemController : ControllerBase
         if(result.Success == false) return BadRequest(result);
         return Ok(result);
     }
+
     [HttpGet("GetItem/{Id}")]
     public async Task<ActionResult> GetItem(Guid Id)
     {
@@ -38,6 +36,7 @@ public class ItemController : ControllerBase
         if (result.Success == false) return BadRequest(result);
         return Ok(result);
     }
+
     [HttpPost("UpdateItems")]
     public async Task<ActionResult> UpdateItem(UpdateCategoryDto dto)
     {

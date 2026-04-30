@@ -1,13 +1,10 @@
-﻿//using Azure.Core;
-using AutoMapper;
+﻿using AutoMapper;
 using ServiceRequestMS.Application.Common;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models.Enums;
 using ServiceRequestMS.Core.Models;
 using ServiceRequestMS.Data.Repositories.Interfaces;
-using System.Collections.Generic;
-
 namespace ServiceRequestMS.Application.Services;
 public class RequestService : IRequestService
 {
@@ -19,7 +16,7 @@ public class RequestService : IRequestService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<ApiResponse<CreateRequestDto>> CreateRequest(CreateRequestDto dto)
+    public async Task<ApiResponse<RequestDto>> CreateRequest(CreateRequestDto dto)
     {
 
         var request = new Request
@@ -33,9 +30,13 @@ public class RequestService : IRequestService
 
         await _unitOfWork.Requests.AddAsync(request);
         await _unitOfWork.CompleteAsync();
-        return ApiResponse<CreateRequestDto>.SuccessResponse(dto,"Request Created Succesfully");
+        return ApiResponse<RequestDto>.SuccessResponse(new RequestDto
+        {
+            Id = request.Id,
+            Title = request.Title,
+            Status = request.Status
+        }, "Request Created Succesfully");
     }
-
     public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetRequestsForAdminAsync(string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var requests = await _unitOfWork.Requests.GetAllWithDetailsAsync(searchTerm,sortBy, sortOrder);
@@ -43,7 +44,6 @@ public class RequestService : IRequestService
         return ApiResponse<IEnumerable<RequestAdminDto>>.SuccessResponse(_mapper.Map<IEnumerable<RequestAdminDto>>(requests), "Requests Retrieved Succesfully");
 
     }
-
     public async Task<ApiResponse<IEnumerable<RequestForEmployeeDto>>> GetRequestsForEmployeeAsync(Guid Id, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var emp = await _unitOfWork.Users.AnyAsync(x => x.Id == Id && x.Role == UserRoles.Employee);
@@ -62,7 +62,6 @@ public class RequestService : IRequestService
 
 
     }
-
     public async Task<ApiResponse<IEnumerable<RequestForStaffDto>>> GetRequestsForStaffAsync(Guid Id, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         var emp = await _unitOfWork.Users.AnyAsync(x => x.Id == Id && x.Role == UserRoles.Staff);
@@ -79,19 +78,24 @@ public class RequestService : IRequestService
         return ApiResponse<IEnumerable<RequestForStaffDto>>.SuccessResponse(_mapper.Map<IEnumerable<RequestForStaffDto>>(requests), "Requests Retrieved Succesfully");
 
     }
-    public async Task<ApiResponse<bool>> DeleteRequest(Guid Id)
+    public async Task<ApiResponse<bool>> DeleteRequest(Guid Id, Guid currentUserId)
     {
         var request = await _unitOfWork.Requests.GetByIdAsync(Id);
         if (request == null) { return ApiResponse<bool>.FailureResponse("Request not Found"); }
 
-        if (request.Status == RequestStatus.New)
+        if (request.CreatedBy != currentUserId)
         {
-            _unitOfWork.Requests.Delete(request);
-            await _unitOfWork.CompleteAsync();
-            return ApiResponse<bool>.SuccessResponse(true, "Request Deleted Succesfully");
-
+            return ApiResponse<bool>.FailureResponse("You can only delete your own requests");
         }
-        return ApiResponse<bool>.FailureResponse("Request must be New to be deleted");
+
+        if (request.Status != RequestStatus.New)
+        {
+            return ApiResponse<bool>.FailureResponse("Request must be New to be deleted");
+        }
+
+        _unitOfWork.Requests.Delete(request);
+        await _unitOfWork.CompleteAsync();
+        return ApiResponse<bool>.SuccessResponse(true, "Request Deleted Succesfully");
     }
     public async Task<ApiResponse<bool>> UpdateRequest(UpdateEmployeeRequestDto dto)
     {
@@ -110,7 +114,6 @@ public class RequestService : IRequestService
          await _unitOfWork.CompleteAsync() ;
         return ApiResponse<bool>.SuccessResponse(true, "Request Updated Succesfully");
     }
-
     public async Task<ApiResponse<IEnumerable<RequestAdminDto>>> GetPagedRequests(int pageNumber, int pageSize, string? searchTerm = null, string? sortBy = null, string sortOrder = "desc")
     {
         if (pageNumber < 1)

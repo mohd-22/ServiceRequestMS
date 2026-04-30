@@ -45,7 +45,6 @@ public class CategoryService : ICategoryService
         });
         return ApiResponse<IEnumerable<CategoryItemDto>>.SuccessResponse(categoriesDtos,"Categories Retrieved Succesfully");
     }
-
     public async Task<ApiResponse<CreateCategoryDto>> CreateCategory(CreateCategoryDto CatDto)
     {
         var category = await _unitOfWork.Categories.AnyAsync(x => x.Name == CatDto.Name);
@@ -80,7 +79,6 @@ public class CategoryService : ICategoryService
         return ApiResponse<UpdateCategoryDto>.SuccessResponse(CatDto,"Categroy Updated Succesfully");
 
     }
-
     public async Task<ApiResponse<bool>> DeleteCategory(Guid Id)
     {
         var category = await _unitOfWork.Categories.GetByIdAsync(Id);

@@ -29,6 +29,14 @@
   align-items: stretch;
 }
 
+.login-topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 0 6px;
+}
+
 .promo-panel,
 .login-card {
   border-radius: 28px;
@@ -258,6 +266,11 @@
 @media (max-width: 992px) {
   .login-shell {
     grid-template-columns: 1fr;
+  }
+
+  .login-topbar {
+    justify-content: center;
+    padding-bottom: 12px;
   }
 
   .promo-panel {

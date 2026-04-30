@@ -27,7 +27,6 @@ public class UserRepository : GenericRepository<User>, IUserRepository
                 .Take(pageSize)
                 .ToListAsync();
     }
-
     private IQueryable<User> ApplySort(IQueryable<User> query, string? sortBy, string sortOrder)
     {
         var ascending = string.Equals(sortOrder, "asc", StringComparison.OrdinalIgnoreCase);

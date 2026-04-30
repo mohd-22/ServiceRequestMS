@@ -2,16 +2,13 @@
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
-using ServiceRequestMS.core.Models.Enums;
 using ServiceRequestMS.Data.Repositories.Interfaces;
-
 namespace ServiceRequestMS.Application.Services;
 public class ItemService : IItemService
 {
     private readonly IUnitOfWork _unitOfWork;
+    public ItemService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;   
 
-    public ItemService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-   
     public async Task<ApiResponse<ItemDto>> CreateItemAsync(ItemDto dto)
     {
 
@@ -30,7 +27,6 @@ public class ItemService : IItemService
         await _unitOfWork.CompleteAsync();
         return ApiResponse<ItemDto>.SuccessResponse(dto,"Item Created Succesfully");
     }
-
     public async Task<ApiResponse<ItemDto>> GetItemByIdAsync(Guid Id)
     {
         var item = await _unitOfWork.Items.GetByIdAsync(Id);
@@ -79,7 +75,6 @@ public class ItemService : IItemService
         return ApiResponse<UpdateCategoryDto>.SuccessResponse(Itemdto,"Item Updated Succsefully");
 
     }
-
     public async Task<ApiResponse<bool>> DeleteItem(Guid Id)
     {
         var item = await _unitOfWork.Items.GetByIdAsync(Id);

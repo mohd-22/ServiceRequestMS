@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ServiceRequestMS.Application\ServiceRequestMS.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

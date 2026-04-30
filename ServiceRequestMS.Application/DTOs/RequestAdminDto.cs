@@ -1,34 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceRequestMS.Application.DTOs
+﻿namespace ServiceRequestMS.Application.DTOs;
+public class RequestAdminDto
 {
-    public class RequestAdminDto
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-
-        public string Description { get; set; } = string.Empty;
-
-        public string Status { get; set; }  = string.Empty;
-
-        public Guid RequesterId { get; set; } 
-        public string RequesterName { get; set; } = string.Empty;
-
-        public Guid? AssignedStaffId { get; set; }
-        public string AssignedStaffName { get; set; } = string.Empty;
-
-
-        public Guid CategoryId { get; set; }
-        public string CategoryName { get; set; } = string.Empty;
-        public string ItemName { get; set; } = string.Empty;
-
-
-        public DateTime CreatedDate { get; set; }
-
-
-    }
+    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Status { get; set; }  = string.Empty;
+    public Guid RequesterId { get; set; } 
+    public string RequesterName { get; set; } = string.Empty;
+    public Guid? AssignedStaffId { get; set; }
+    public string AssignedStaffName { get; set; } = string.Empty;
+    public Guid CategoryId { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
+    public string ItemName { get; set; } = string.Empty;
+    public DateTime CreatedDate { get; set; }
 }

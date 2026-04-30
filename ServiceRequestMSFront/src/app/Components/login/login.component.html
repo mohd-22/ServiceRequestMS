@@ -3,22 +3,23 @@
   <div class="login-backdrop" style="right:-120px;bottom:-140px;width:360px;height:360px;background:rgba(255, 255, 255, 0.14);"></div>
 
   <div class="login-shell">
+    <div class="login-topbar">
+      <app-language-switcher></app-language-switcher>
+    </div>
     <aside class="promo-panel">
       <div class="promo-badge">ServiceRequestMS</div>
-      <h1>Sign in to manage requests with clarity.</h1>
-      <p>
-        Track service requests, category flows, and staff assignments from one clean dashboard.
-      </p>
+      <h1>{{ 'LOGIN.PROMO_TITLE' | translate }}</h1>
+      <p>{{ 'LOGIN.PROMO_DESC' | translate }}</p>
 
       <div class="promo-points">
       
         <div class="promo-point">
           <span class="point-icon">01</span>
-          <span>Fast navigation to requests, categories, and the dashboard.</span>
+          <span>{{ 'LOGIN.PROMO_POINT1' | translate }}</span>
         </div>
         <div class="promo-point">
           <span class="point-icon">02</span>
-          <span>Modern service desk layout built for daily operations.</span>
+          <span>{{ 'LOGIN.PROMO_POINT2' | translate }}</span>
         </div>
       </div>
     </aside>
@@ -27,13 +28,13 @@
       <div class="card-header">
         <div class="card-mark">SR</div>
         <div>
-          <p class="eyebrow">Welcome back</p>
-          <h2>Admin sign in</h2>
+          <p class="eyebrow">{{ 'LOGIN.WELCOME_BACK' | translate }}</p>
+          <h2>{{ 'LOGIN.ADMIN_SIGNIN' | translate }}</h2>
         </div>
       </div>
 
       <form class="login-form" #loginForm="ngForm" (ngSubmit)="submitLogin()" novalidate>
-        <label class="field-label" for="userName">User name</label>
+        <label class="field-label" for="userName">{{ 'LOGIN.USERNAME' | translate }}</label>
         <div class="input-wrap">
           <input
             id="userName"
@@ -41,12 +42,12 @@
             [(ngModel)]="credentials.userName"
             type="text"
             class="field-input"
-            placeholder="Enter your user name"
+            placeholder="{{ 'LOGIN.USERNAME_PLACEHOLDER' | translate }}"
             autocomplete="username"
             required />
         </div>
 
-        <label class="field-label" for="password">Password</label>
+        <label class="field-label" for="password">{{ 'LOGIN.PASSWORD' | translate }}</label>
         <div class="input-wrap password-wrap">
           <input
             id="password"
@@ -54,11 +55,11 @@
             [(ngModel)]="credentials.password"
             [type]="showPassword ? 'text' : 'password'"
             class="field-input"
-            placeholder="Enter your password"
+            placeholder="{{ 'LOGIN.PASSWORD_PLACEHOLDER' | translate }}"
             autocomplete="current-password"
             required />
           <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-            {{ showPassword ? 'Hide' : 'Show' }}
+            {{ showPassword ? ('LOGIN.HIDE' | translate) : ('LOGIN.SHOW' | translate) }}
           </button>
         </div>
 
@@ -66,8 +67,8 @@
           type="submit"
           class="login-button"
           [disabled]="isLoading || loginForm.invalid">
-          <span *ngIf="!isLoading">Sign in</span>
-          <span *ngIf="isLoading">Signing in...</span>
+          <span *ngIf="!isLoading">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</span>
+          <span *ngIf="isLoading">{{ 'LOGIN.SIGNING_IN' | translate }}</span>
         </button>
 
         <p class="status-message" *ngIf="errorMessage">{{ errorMessage }}</p>

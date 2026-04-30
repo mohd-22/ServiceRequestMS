@@ -13,11 +13,24 @@
     "PASSWORD": "Password",
     "LOGIN_BUTTON": "Login",
     "INVALID_CREDENTIALS": "Invalid email or password",
-    "REQUIRED_FIELD": "This field is required"
+    "REQUIRED_FIELD": "This field is required",
+    "PROMO_TITLE": "Sign in to manage requests with clarity.",
+    "PROMO_DESC": "Track service requests, category flows, and staff assignments from one clean dashboard.",
+    "PROMO_POINT1": "Fast navigation to requests, categories, and the dashboard.",
+    "PROMO_POINT2": "Modern service desk layout built for daily operations.",
+    "WELCOME_BACK": "Welcome back",
+    "ADMIN_SIGNIN": "Admin sign in",
+    "USERNAME": "User name",
+    "USERNAME_PLACEHOLDER": "Enter your user name",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "SHOW": "Show",
+    "HIDE": "Hide",
+    "SIGNING_IN": "Signing in..."
   },
   "DASHBOARD": {
     "WELCOME": "Welcome to Service Request Management System",
-    "ROLE": "Role"
+    "ROLE": "Role",
+    "DESCRIPTION": "Use the left sidebar and click Requests to view the requests table."
   },
   "REQUESTS": {
     "TITLE": "Requests Dashboard",
@@ -52,13 +65,13 @@
     "NAME": "Name",
     "DESCRIPTION": "Description",
     "ID": "ID",
-    "ITEMS": "Items",
+    "ITEMS_LABEL": "Items",
     "ACTIONS": "Actions",
     "EDIT": "Edit",
     "ITEM" : "Item",
     "DELETE": "Delete",
     "SAVE": "Save",
-    "CANCEL": "Cancel",
+    "CANCEL": "Cancel",   
     "ITEMS": {
       "TITLE": "Items For Selected Category",
       "NAME": "ITEMS",      
@@ -69,6 +82,9 @@
       "NO_ITEMS": "No items found for this category."
     }
   },
+   "PROFILE": {
+  "SUBTITLE": "Your Personal account details "
+},
   "USERS": {
     "TITLE": "Users Management",
     "VIEW": "view for all registered users",
