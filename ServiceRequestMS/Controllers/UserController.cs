@@ -52,6 +52,20 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+
+    [Authorize(Roles = $"{nameof(UserRoles.Admin)},{nameof(UserRoles.Manager)}")]
+    [HttpGet("GetAllUsers")]
+    public async Task<ActionResult> GetAllUsers()
+    {
+        var result = await _userService.GetAllUsersAsync();
+
+        if (result.Success == false)
+        {
+            return BadRequest(result);
+        }
+        return Ok(result);
+    }
+
     [Authorize(Roles = nameof(UserRoles.Admin))]
     [HttpPost("AddUser")]
     public async Task<ActionResult<User>> Register(UserRegistraionDto request)
@@ -66,7 +80,7 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = $"{nameof(UserRoles.Admin)},{nameof(UserRoles.Manager)}")]
+    [Authorize(Roles = $"{nameof(UserRoles.Admin)}, {nameof(UserRoles.Manager)}")]
     [HttpGet("PagedUser/{page}/{pageSize}")]
     public async Task<ActionResult> GetPagedUsers(int page, int pageSize, string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] string sortOrder = "desc")
     {

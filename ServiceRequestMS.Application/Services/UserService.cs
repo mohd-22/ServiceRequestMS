@@ -119,6 +119,24 @@ public class UserService : IUserService
         bool hasActiveRequests = await _unitOfWork.Requests.AnyAsync(r => r.CreatedBy == employeeId);
         return !hasActiveRequests;
     }
+    public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllUsersAsync() 
+    {
+        var users = await _unitOfWork.Users.GetAllAsync();
+
+        var userDtos = users.Select(user => new UserDto
+        {
+            Id = user.Id.ToString(),
+            FullName = user.FullName,
+            UserName = user.UserName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            Role = user.Role.ToString(),
+            IsActive = user.IsActive,
+            CreatedAt = user.CreatedDate
+        });
+
+        return ApiResponse<IEnumerable<UserDto>>.SuccessResponse(userDtos,"Users Retrieved Succesfully");
+    }
     public async Task<ApiResponse<UserDto>> GetUserByIdAsync(Guid id)
     {
       
