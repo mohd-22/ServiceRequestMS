@@ -66,7 +66,7 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = nameof(UserRoles.Admin))]
+    //[Authorize(Roles = nameof(UserRoles.Admin))]
     [HttpPost("AddUser")]
     public async Task<ActionResult<User>> Register(UserRegistraionDto request)
     {

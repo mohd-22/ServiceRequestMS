@@ -104,10 +104,10 @@ public class AppDbContext : DbContext
         var itemWindowsId = Guid.Parse("d3333333-3333-3333-3333-333333333333");
 
         modelBuilder.Entity<User>().HasData(
-           new User { Id = adminId, FullName = "System Admin", UserName = "admin", PasswordHash = "123", Role = UserRoles.Admin, CreatedDate = DateTime.Now },
-           new User { Id = managerId, FullName = "Project Manager", UserName = "manager", PasswordHash = "123", Role = UserRoles.Manager, CreatedDate = DateTime.Now },
-           new User { Id = empId, FullName = "Ahmad Employee", UserName = "ahmad", PasswordHash = "123", Role = UserRoles.Employee, CreatedDate = DateTime.Now },
-           new User { Id = staffId, FullName = "Tech Staff", UserName = "staff", PasswordHash = "123", Role = UserRoles.Staff, CreatedDate = DateTime.Now }
+           new User { Id = adminId, FullName = "System Admin", UserName = "admin", PasswordHash = "AQAAAAIAAYagAAAAEKkB6aXFw8CerrUrN0OsWO0pBbCJt/mSGfsTJ9XMP0kCkUiuUZbTHez2JbMQ36JSLA==", Role = UserRoles.Admin, CreatedDate = DateTime.Now },
+           new User { Id = managerId, FullName = "Project Manager", UserName = "manager", PasswordHash = "AQAAAAIAAYagAAAAEKkB6aXFw8CerrUrN0OsWO0pBbCJt/mSGfsTJ9XMP0kCkUiuUZbTHez2JbMQ36JSLA==", Role = UserRoles.Manager, CreatedDate = DateTime.Now },
+           new User { Id = empId, FullName = "Ahmad Employee", UserName = "ahmad", PasswordHash = "AQAAAAIAAYagAAAAEKkB6aXFw8CerrUrN0OsWO0pBbCJt/mSGfsTJ9XMP0kCkUiuUZbTHez2JbMQ36JSLA==", Role = UserRoles.Employee, CreatedDate = DateTime.Now },
+           new User { Id = staffId, FullName = "Tech Staff", UserName = "staff", PasswordHash = "AQAAAAIAAYagAAAAEKkB6aXFw8CerrUrN0OsWO0pBbCJt/mSGfsTJ9XMP0kCkUiuUZbTHez2JbMQ36JSLA==", Role = UserRoles.Staff, CreatedDate = DateTime.Now }
         );
 
         modelBuilder.Entity<Category>().HasData(

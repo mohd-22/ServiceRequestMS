@@ -151,9 +151,9 @@ namespace ServiceRequestMS.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -181,8 +181,8 @@ namespace ServiceRequestMS.Data.Migrations
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "Description", "LastUpdatedBy", "LastUpdatedDate", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6863), "Physical devices and equipment", null, null, "Hardware" },
-                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6866), "Applications and licenses", null, null, "Software" }
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9466), "Physical devices and equipment", null, null, "Hardware" },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9470), "Applications and licenses", null, null, "Software" }
                 });
 
             migrationBuilder.InsertData(
@@ -190,10 +190,10 @@ namespace ServiceRequestMS.Data.Migrations
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "Email", "FullName", "IsActive", "LastUpdatedBy", "LastUpdatedDate", "PasswordHash", "PhoneNumber", "Role", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6640), "", "System Admin", true, null, null, "123", "", "Admin", "admin" },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6666), "", "Project Manager", true, null, null, "123", "", "Manager", "manager" },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6670), "", "Ahmad Employee", true, null, null, "123", "", "Employee", "ahmad" },
-                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6673), "", "Tech Staff", true, null, null, "123", "", "Staff", "staff" }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9199), "", "System Admin", true, null, null, "123", "", "Admin", "admin" },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9217), "", "Project Manager", true, null, null, "123", "", "Manager", "manager" },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9221), "", "Ahmad Employee", true, null, null, "123", "", "Employee", "ahmad" },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9225), "", "Tech Staff", true, null, null, "123", "", "Staff", "staff" }
                 });
 
             migrationBuilder.InsertData(
@@ -201,9 +201,9 @@ namespace ServiceRequestMS.Data.Migrations
                 columns: new[] { "Id", "CategoryId", "CreatedBy", "CreatedDate", "Description", "LastUpdatedBy", "LastUpdatedDate", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("d1111111-1111-1111-1111-111111111111"), new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6895), "Pointing devices", null, null, "Mouse" },
-                    { new Guid("d2222222-2222-2222-2222-222222222222"), new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6947), "Display screens", null, null, "Monitor" },
-                    { new Guid("d3333333-3333-3333-3333-333333333333"), new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6950), "OS Activation", null, null, "Windows License" }
+                    { new Guid("d1111111-1111-1111-1111-111111111111"), new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9502), "Pointing devices", null, null, "Mouse" },
+                    { new Guid("d2222222-2222-2222-2222-222222222222"), new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9505), "Display screens", null, null, "Monitor" },
+                    { new Guid("d3333333-3333-3333-3333-333333333333"), new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9508), "OS Activation", null, null, "Windows License" }
                 });
 
             migrationBuilder.InsertData(
@@ -211,9 +211,9 @@ namespace ServiceRequestMS.Data.Migrations
                 columns: new[] { "Id", "AssignedStaffId", "CategoryItemId", "CreatedBy", "CreatedDate", "Description", "LastUpdatedBy", "LastUpdatedDate", "RejectionReason", "Status", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("49afc61e-4e67-4a22-aa88-c80689164a4d"), new Guid("44444444-4444-4444-4444-444444444444"), new Guid("d2222222-2222-2222-2222-222222222222"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 4, 4, 21, 52, 40, 847, DateTimeKind.Local).AddTicks(7048), "Monitor screen keeps turning off", null, null, null, "Assigned", "Screen Flickering" },
-                    { new Guid("5181c457-cf0c-4538-921b-d56e71550a63"), null, new Guid("d1111111-1111-1111-1111-111111111111"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(7042), "Left click is not responding", null, null, null, "New", "Broken Mouse" },
-                    { new Guid("d531c9f1-0ae9-407d-bf2e-d7a6316b41b9"), new Guid("44444444-4444-4444-4444-444444444444"), new Guid("d3333333-3333-3333-3333-333333333333"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 4, 3, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(7059), "Need to activate Windows 11", null, null, null, "InProgress", "Windows Activation" }
+                    { new Guid("6c5db5ca-9f81-489f-b1c0-ea482936cfd4"), null, new Guid("d1111111-1111-1111-1111-111111111111"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 5, 1, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9584), "Left click is not responding", null, null, null, "New", "Broken Mouse" },
+                    { new Guid("a04a6597-f7ec-4fff-8e8c-2daa52bb2948"), new Guid("44444444-4444-4444-4444-444444444444"), new Guid("d2222222-2222-2222-2222-222222222222"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 5, 1, 13, 17, 8, 796, DateTimeKind.Local).AddTicks(9590), "Monitor screen keeps turning off", null, null, null, "Assigned", "Screen Flickering" },
+                    { new Guid("ea8a56ca-faf9-4d0f-a32b-bd66a35c4b83"), new Guid("44444444-4444-4444-4444-444444444444"), new Guid("d3333333-3333-3333-3333-333333333333"), new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 4, 30, 15, 17, 8, 796, DateTimeKind.Local).AddTicks(9600), "Need to activate Windows 11", null, null, null, "InProgress", "Windows Activation" }
                 });
 
             migrationBuilder.CreateIndex(
