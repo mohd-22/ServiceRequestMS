@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
+using ServiceRequestMS.core.Models.Enums;
 
 namespace ServiceRequestMS.Api.Controllers;
-//[Authorize]
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class CategoryController : ControllerBase
@@ -41,6 +43,7 @@ public class CategoryController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     [HttpPost("CreateCategory")]
     public async Task<ActionResult> CreateCategory(CreateCategoryDto dto)
     {
@@ -54,7 +57,8 @@ public class CategoryController : ControllerBase
             return Ok(result);
         }
     }
-
+    
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     [HttpPost("UpdateCategory")]
     public async Task<ActionResult> UpdateCategory(UpdateCategoryDto dto)
     {
@@ -69,6 +73,7 @@ public class CategoryController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     [HttpDelete("{Id}")]
     public async Task<ActionResult> DeleteItem(Guid Id)
     {

@@ -12,8 +12,8 @@ using ServiceRequestMS.data.Data;
 namespace ServiceRequestMS.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260404205241_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260501122028_editSeededdata")]
+    partial class editSeededdata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,32 +77,32 @@ namespace ServiceRequestMS.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5181c457-cf0c-4538-921b-d56e71550a63"),
+                            Id = new Guid("cd159ed5-97be-41c4-a7c1-fb519c4a6849"),
                             CategoryItemId = new Guid("d1111111-1111-1111-1111-111111111111"),
                             CreatedBy = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(7042),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(6023),
                             Description = "Left click is not responding",
                             Status = "New",
                             Title = "Broken Mouse"
                         },
                         new
                         {
-                            Id = new Guid("49afc61e-4e67-4a22-aa88-c80689164a4d"),
+                            Id = new Guid("a9e978f3-9d1b-41b8-9be6-b89e0c94a742"),
                             AssignedStaffId = new Guid("44444444-4444-4444-4444-444444444444"),
                             CategoryItemId = new Guid("d2222222-2222-2222-2222-222222222222"),
                             CreatedBy = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedDate = new DateTime(2026, 4, 4, 21, 52, 40, 847, DateTimeKind.Local).AddTicks(7048),
+                            CreatedDate = new DateTime(2026, 5, 1, 13, 20, 27, 525, DateTimeKind.Local).AddTicks(6037),
                             Description = "Monitor screen keeps turning off",
                             Status = "Assigned",
                             Title = "Screen Flickering"
                         },
                         new
                         {
-                            Id = new Guid("d531c9f1-0ae9-407d-bf2e-d7a6316b41b9"),
+                            Id = new Guid("bb8c7360-e652-46a3-b3f5-b509c58871f3"),
                             AssignedStaffId = new Guid("44444444-4444-4444-4444-444444444444"),
                             CategoryItemId = new Guid("d3333333-3333-3333-3333-333333333333"),
                             CreatedBy = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedDate = new DateTime(2026, 4, 3, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(7059),
+                            CreatedDate = new DateTime(2026, 4, 30, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(6048),
                             Description = "Need to activate Windows 11",
                             Status = "InProgress",
                             Title = "Windows Activation"
@@ -185,7 +185,7 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6863),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5896),
                             Description = "Physical devices and equipment",
                             Name = "Hardware"
                         },
@@ -193,7 +193,7 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6866),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5901),
                             Description = "Applications and licenses",
                             Name = "Software"
                         });
@@ -277,7 +277,7 @@ namespace ServiceRequestMS.Data.Migrations
                             Id = new Guid("d1111111-1111-1111-1111-111111111111"),
                             CategoryId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6895),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5943),
                             Description = "Pointing devices",
                             Name = "Mouse"
                         },
@@ -286,7 +286,7 @@ namespace ServiceRequestMS.Data.Migrations
                             Id = new Guid("d2222222-2222-2222-2222-222222222222"),
                             CategoryId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6947),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5946),
                             Description = "Display screens",
                             Name = "Monitor"
                         },
@@ -295,7 +295,7 @@ namespace ServiceRequestMS.Data.Migrations
                             Id = new Guid("d3333333-3333-3333-3333-333333333333"),
                             CategoryId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6950),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5949),
                             Description = "OS Activation",
                             Name = "Windows License"
                         });
@@ -355,11 +355,11 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6640),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5020),
                             Email = "",
                             FullName = "System Admin",
                             IsActive = true,
-                            PasswordHash = "123",
+                            PasswordHash = "123456",
                             PhoneNumber = "",
                             Role = "Admin",
                             UserName = "admin"
@@ -368,11 +368,11 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6666),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5039),
                             Email = "",
                             FullName = "Project Manager",
                             IsActive = true,
-                            PasswordHash = "123",
+                            PasswordHash = "123456",
                             PhoneNumber = "",
                             Role = "Manager",
                             UserName = "manager"
@@ -381,11 +381,11 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6670),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5163),
                             Email = "",
                             FullName = "Ahmad Employee",
                             IsActive = true,
-                            PasswordHash = "123",
+                            PasswordHash = "123456",
                             PhoneNumber = "",
                             Role = "Employee",
                             UserName = "ahmad"
@@ -394,11 +394,11 @@ namespace ServiceRequestMS.Data.Migrations
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2026, 4, 4, 23, 52, 40, 847, DateTimeKind.Local).AddTicks(6673),
+                            CreatedDate = new DateTime(2026, 5, 1, 15, 20, 27, 525, DateTimeKind.Local).AddTicks(5167),
                             Email = "",
                             FullName = "Tech Staff",
                             IsActive = true,
-                            PasswordHash = "123",
+                            PasswordHash = "123456",
                             PhoneNumber = "",
                             Role = "Staff",
                             UserName = "staff"

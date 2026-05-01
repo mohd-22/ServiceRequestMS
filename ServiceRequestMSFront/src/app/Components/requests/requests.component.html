@@ -146,144 +146,287 @@
       </button>
     </div>
 
-    <div class="table-responsive" *ngIf="!isLoading && !errorMessage && requests.length > 0">
-      <table class="table align-middle custom-table">
-        <thead>
-          <tr>
-            <th class="sortable" [ngClass]="{'sorted': sortBy === 'title', 'asc': sortBy === 'title' && sortOrder === 'asc', 'desc': sortBy === 'title' && sortOrder === 'desc'}" (click)="setSort('title')">
-              {{ 'REQUESTS.TITLE_LABEL' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">
-              {{ 'COMMON.STATUS' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th *ngIf=" role == 'Admin' || role === 'Manager'"> {{ 'USERS.REQUESTER_ID' | translate }}</th>
-            <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'" class="sortable" [ngClass]="{'sorted': sortBy === 'requester', 'asc': sortBy === 'requester' && sortOrder === 'asc', 'desc': sortBy === 'requester' && sortOrder === 'desc'}" (click)="setSort('requester')">
-              {{ 'USERS.REQUESTER' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th *ngIf="role === 'Staff'">{{ 'USERS.PHONE' | translate }}</th>
-        <th *ngIf=" role == 'Admin' || role === 'Manager' "> {{ 'USERS.STAFFID' | translate }}</th>
-            <th *ngIf=" role !== 'Staff'">{{ 'USERS.ASSIGNED_STAFF' | translate }}</th>
-            <th *ngIf="role === 'Manager'">{{ 'COMMON.ASSIGN' | translate }}</th>
-            <th *ngIf="role === 'Staff'">{{ 'COMMON.CHANGE_STATUS' | translate }}</th>
-            <th class="sortable" [ngClass]="{'sorted': sortBy === 'category', 'asc': sortBy === 'category' && sortOrder === 'asc', 'desc': sortBy === 'category' && sortOrder === 'desc'}" (click)="setSort('category')">
-              {{ 'REQUESTS.CATEGORY' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th class="sortable" [ngClass]="{'sorted': sortBy === 'item', 'asc': sortBy === 'item' && sortOrder === 'asc', 'desc': sortBy === 'item' && sortOrder === 'desc'}" (click)="setSort('item')">
-              {{ 'CATEGORIES.ITEMS.NAME' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdDate', 'asc': sortBy === 'createdDate' && sortOrder === 'asc', 'desc': sortBy === 'createdDate' && sortOrder === 'desc'}" (click)="setSort('createdDate')">
-              {{ 'USERS.CREATED' | translate }} <span class="sort-icon"></span>
-            </th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let request of requests">
-            <td>
-              <div class="fw-semibold">{{ request.title }}</div>
-              <div class="text-muted small">{{ request.description }}</div>
-            </td>
-            <td>
-              <span [class]="getStatusClass(request.status)">{{ getStatusText(request.status) | translate }}</span>
-            </td>
-            <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.requesterId }}</td>
-            <td *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">{{ request.requesterName }}</td>
-            <td *ngIf="role === 'Staff'">{{ request.requesterPhone }}</td>
-            <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.assignedStaffId }}</td>
+    <div class="desktop-table-wrapper" *ngIf="!isLoading && !errorMessage && requests.length > 0">
+      <div class="table-responsive">
+        <table class="table align-middle custom-table">
+          <thead>
+            <tr>
+              <th class="sortable" [ngClass]="{'sorted': sortBy === 'title', 'asc': sortBy === 'title' && sortOrder === 'asc', 'desc': sortBy === 'title' && sortOrder === 'desc'}" (click)="setSort('title')">
+                {{ 'REQUESTS.TITLE_LABEL' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th class="sortable" [ngClass]="{'sorted': sortBy === 'status', 'asc': sortBy === 'status' && sortOrder === 'asc', 'desc': sortBy === 'status' && sortOrder === 'desc'}" (click)="setSort('status')">
+                {{ 'COMMON.STATUS' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th *ngIf=" role == 'Admin' || role === 'Manager'"> {{ 'USERS.REQUESTER_ID' | translate }}</th>
+              <th *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'" class="sortable" [ngClass]="{'sorted': sortBy === 'requester', 'asc': sortBy === 'requester' && sortOrder === 'asc', 'desc': sortBy === 'requester' && sortOrder === 'desc'}" (click)="setSort('requester')">
+                {{ 'USERS.REQUESTER' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th *ngIf="role === 'Staff'">{{ 'USERS.STAFFID' | translate }}</th>
+              <th *ngIf=" role == 'Admin' || role === 'Manager' "> {{ 'USERS.STAFFID' | translate }}</th>
+              <th *ngIf=" role !== 'Staff'">{{ 'USERS.ASSIGNED_STAFF' | translate }}</th>
+              <th *ngIf="role === 'Manager'">{{ 'COMMON.ASSIGN' | translate }}</th>
+              <th *ngIf="role === 'Staff'">{{ 'COMMON.CHANGE_STATUS' | translate }}</th>
+              <th class="sortable" [ngClass]="{'sorted': sortBy === 'category', 'asc': sortBy === 'category' && sortOrder === 'asc', 'desc': sortBy === 'category' && sortOrder === 'desc'}" (click)="setSort('category')">
+                {{ 'REQUESTS.CATEGORY' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th class="sortable" [ngClass]="{'sorted': sortBy === 'item', 'asc': sortBy === 'item' && sortOrder === 'asc', 'desc': sortBy === 'item' && sortOrder === 'desc'}" (click)="setSort('item')">
+                {{ 'CATEGORIES.ITEMS.NAME' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th class="sortable" [ngClass]="{'sorted': sortBy === 'createdDate', 'asc': sortBy === 'createdDate' && sortOrder === 'asc', 'desc': sortBy === 'createdDate' && sortOrder === 'desc'}" (click)="setSort('createdDate')">
+                {{ 'USERS.CREATED' | translate }} <span class="sort-icon"></span>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of requests">
+              <td>
+                <div class="fw-semibold">{{ request.title }}</div>
+                <div class="text-muted small">{{ request.description }}</div>
+              </td>
+              <td>
+                <span [class]="getStatusClass(request.status)">{{ getStatusText(request.status) | translate }}</span>
+              </td>
+              <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.requesterId }}</td>
+              <td *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">{{ request.requesterName }}</td>
+              <td *ngIf="role === 'Staff'">{{ request.requesterPhone }}</td>
+              <td *ngIf="role === 'Admin' || role === 'Manager'">{{ request.assignedStaffId }}</td>
               <td *ngIf="role !== 'Staff'">{{ request.assignedStaffName || 'Unassigned' }}</td>
-            <td *ngIf="role === 'Manager'">
-              <div *ngIf="canAssignRequest(request); else assignedOrBlocked">
-                <select
-                  class="form-select form-select-sm mb-2"
-                  [(ngModel)]="selectedStaffByRequestId[request.id]"
-                  [name]="'staff-' + request.id">
-                  <option value="">Select staff</option>
-                  <option *ngFor="let staff of staffUsers" [value]="staff.id">
-                    {{ staff.fullName }} ({{ staff.userName }})
-                  </option>
-                </select>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  [disabled]="!selectedStaffByRequestId[request.id] || isAssignLoading(request.id)"
-                  (click)="assignStaff(request)">
-                  {{ isAssignLoading(request.id) ? 'Assigning...' : 'Assign' }}
-                </button>
-              </div>
-              <ng-template #assignedOrBlocked>
-                <span class="text-muted small">Not assignable</span>
-              </ng-template>
-            </td>
-            <td *ngIf="role === 'Staff'">
-              <div *ngIf="canChangeStaffStatus(request); else noStatusAction">
-                <select
-                  class="form-select form-select-sm mb-2"
-                  [(ngModel)]="selectedNextStatusByRequestId[request.id]"
-                  [name]="'status-' + request.id">
-                  <option value="">Select status</option>
-                  <option *ngFor="let option of getStaffStatusOptions(request)" [value]="option.value">
-                    {{ option.label }}
-                  </option>
-                </select>
-                <textarea
-                  *ngIf="selectedNextStatusByRequestId[request.id] === 'Rejected'"
-                  class="form-control form-control-sm mb-2"
-                  rows="2"
-                  placeholder="Rejection note (optional)"
-                  [(ngModel)]="selectedNextStatusByRequestId[request.id + '-notes']"
-                  [name]="'notes-' + request.id"></textarea>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  [disabled]="!selectedNextStatusByRequestId[request.id] || isStatusLoading(request.id)"
-                  (click)="changeStaffStatus(request)">
-                  {{ isStatusLoading(request.id) ? 'Updating...' : 'Update' }}
-                </button>
-              </div>
-              <ng-template #noStatusAction>
-                <span class="text-muted small">No action available</span>
-              </ng-template>
-            </td>
-            <td>
-              <a
-                class="category-link"
-                [routerLink]="['/categories']"
-                [queryParams]="{ categoryId: request.categoryId }">
-                {{ request.categoryName }}
-              </a>
-            </td>
-            <td>{{ request.itemName }}</td>
-            <td>{{ formatDate(request.createdDate) }}</td>
-            <td>
-              <div class="d-flex gap-1">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-secondary"
-                  (click)="viewAttachments(request.id)"
-                  title="Attachments">
-                  <i class="fas fa-paperclip"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  (click)="viewComments(request.id)"
-                  title="{{ 'COMMON.COMMENTS' | translate }}">
-                  <i class="fas fa-comments"></i>
-                </button>
-                <button
-                  *ngIf="canDeleteRequest(request)"
-                  type="button"
-                  class="btn btn-sm btn-outline-danger"
-                  [disabled]="isDeleteLoading(request.id)"
-                  (click)="deleteRequest(request)"
-                  title="Delete request">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td *ngIf="role === 'Manager'">
+                <div *ngIf="canAssignRequest(request); else assignedOrBlocked">
+                  <select
+                    class="form-select form-select-sm mb-2"
+                    [(ngModel)]="selectedStaffByRequestId[request.id]"
+                    [name]="'staff-' + request.id">
+                    <option value="">Select staff</option>
+                    <option *ngFor="let staff of staffUsers" [value]="staff.id">
+                      {{ staff.fullName }} ({{ staff.userName }})
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    [disabled]="!selectedStaffByRequestId[request.id] || isAssignLoading(request.id)"
+                    (click)="assignStaff(request)">
+                    {{ isAssignLoading(request.id) ? 'Assigning...' : 'Assign' }}
+                  </button>
+                </div>
+                <ng-template #assignedOrBlocked>
+                  <span class="text-muted small">Not assignable</span>
+                </ng-template>
+              </td>
+              <td *ngIf="role === 'Staff'">
+                <div *ngIf="canChangeStaffStatus(request); else noStatusAction">
+                  <select
+                    class="form-select form-select-sm mb-2"
+                    [(ngModel)]="selectedNextStatusByRequestId[request.id]"
+                    [name]="'status-' + request.id">
+                    <option value="">Select status</option>
+                    <option *ngFor="let option of getStaffStatusOptions(request)" [value]="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                  <textarea
+                    *ngIf="selectedNextStatusByRequestId[request.id] === 'Rejected'"
+                    class="form-control form-control-sm mb-2"
+                    rows="2"
+                    placeholder="Rejection note (optional)"
+                    [(ngModel)]="selectedNextStatusByRequestId[request.id + '-notes']"
+                    [name]="'notes-' + request.id"></textarea>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    [disabled]="!selectedNextStatusByRequestId[request.id] || isStatusLoading(request.id)"
+                    (click)="changeStaffStatus(request)">
+                    {{ isStatusLoading(request.id) ? 'Updating...' : 'Update' }}
+                  </button>
+                </div>
+                <ng-template #noStatusAction>
+                  <span class="text-muted small">No action available</span>
+                </ng-template>
+              </td>
+              <td>
+                <a
+                  class="category-link"
+                  [routerLink]="['/categories']"
+                  [queryParams]="{ categoryId: request.categoryId }">
+                  {{ request.categoryName }}
+                </a>
+              </td>
+              <td>{{ request.itemName }}</td>
+              <td>{{ formatDate(request.createdDate) }}</td>
+              <td>
+                <div class="d-flex gap-1 flex-wrap">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    (click)="viewAttachments(request.id)"
+                    title="Attachments">
+                    <i class="fas fa-paperclip"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="viewComments(request.id)"
+                    title="{{ 'COMMON.COMMENTS' | translate }}">
+                    <i class="fas fa-comments"></i>
+                  </button>
+                  <button
+                    *ngIf="canDeleteRequest(request)"
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    [disabled]="isDeleteLoading(request.id)"
+                    (click)="deleteRequest(request)"
+                    title="{{ 'COMMON.DELETE' | translate }}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mobile-request-list" *ngIf="!isLoading && !errorMessage && requests.length > 0">
+      <article class="mobile-request-card" *ngFor="let request of requests">
+        <div class="mobile-request-head">
+          <div class="mobile-request-heading">
+            <h3 class="mobile-request-title">{{ request.title }}</h3>
+            <p class="mobile-request-description">{{ request.description }}</p>
+          </div>
+          <span [class]="getStatusClass(request.status)">{{ getStatusText(request.status) | translate }}</span>
+        </div>
+
+        <div class="request-meta-grid">
+          <div class="request-meta-item">
+            <span class="request-meta-label">{{ 'REQUESTS.CATEGORY' | translate }}</span>
+            <a
+              class="category-link request-meta-value"
+              [routerLink]="['/categories']"
+              [queryParams]="{ categoryId: request.categoryId }">
+              {{ request.categoryName }}
+            </a>
+          </div>
+
+          <div class="request-meta-item">
+            <span class="request-meta-label">{{ 'CATEGORIES.ITEMS.NAME' | translate }}</span>
+            <strong class="request-meta-value">{{ request.itemName }}</strong>
+          </div>
+
+          <div class="request-meta-item" *ngIf="role === 'Admin' || role === 'Manager'">
+            <span class="request-meta-label">{{ 'USERS.REQUESTER_ID' | translate }}</span>
+            <strong class="request-meta-value">{{ request.requesterId }}</strong>
+          </div>
+
+          <div class="request-meta-item" *ngIf="role === 'Admin' || role === 'Staff' || role === 'Manager'">
+            <span class="request-meta-label">{{ 'USERS.REQUESTER' | translate }}</span>
+            <strong class="request-meta-value">{{ request.requesterName }}</strong>
+          </div>
+
+          <div class="request-meta-item" *ngIf="role === 'Staff'">
+            <span class="request-meta-label">{{ 'USERS.PHONE' | translate }}</span>
+            <strong class="request-meta-value">{{ request.requesterPhone }}</strong>
+          </div>
+
+          <div class="request-meta-item" *ngIf="role === 'Admin' || role === 'Manager'">
+            <span class="request-meta-label">{{ 'USERS.STAFFID' | translate }}</span>
+            <strong class="request-meta-value">{{ request.assignedStaffId || '—' }}</strong>
+          </div>
+
+          <div class="request-meta-item" *ngIf="role !== 'Staff'">
+            <span class="request-meta-label">{{ 'USERS.ASSIGNED_STAFF' | translate }}</span>
+            <strong class="request-meta-value">{{ request.assignedStaffName || 'Unassigned' }}</strong>
+          </div>
+
+          <div class="request-meta-item">
+            <span class="request-meta-label">{{ 'USERS.CREATED' | translate }}</span>
+            <strong class="request-meta-value">{{ formatDate(request.createdDate) }}</strong>
+          </div>
+        </div>
+
+        <div class="mobile-request-actions">
+          <div class="mobile-request-role-panel" *ngIf="role === 'Manager'">
+            <label class="form-label">{{ 'COMMON.ASSIGN' | translate }}</label>
+            <div *ngIf="canAssignRequest(request); else assignedOrBlockedMobile">
+              <select
+                class="form-select form-select-sm mb-2"
+                [(ngModel)]="selectedStaffByRequestId[request.id]"
+                [name]="'mobile-staff-' + request.id">
+                <option value="">Select staff</option>
+                <option *ngFor="let staff of staffUsers" [value]="staff.id">
+                  {{ staff.fullName }} ({{ staff.userName }})
+                </option>
+              </select>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                [disabled]="!selectedStaffByRequestId[request.id] || isAssignLoading(request.id)"
+                (click)="assignStaff(request)">
+                {{ isAssignLoading(request.id) ? 'Assigning...' : ('COMMON.ASSIGN' | translate) }}
+              </button>
+            </div>
+            <ng-template #assignedOrBlockedMobile>
+              <span class="text-muted small">Not assignable</span>
+            </ng-template>
+          </div>
+
+          <div class="mobile-request-role-panel" *ngIf="role === 'Staff'">
+            <label class="form-label">{{ 'COMMON.CHANGE_STATUS' | translate }}</label>
+            <div *ngIf="canChangeStaffStatus(request); else noStatusActionMobile">
+              <select
+                class="form-select form-select-sm mb-2"
+                [(ngModel)]="selectedNextStatusByRequestId[request.id]"
+                [name]="'mobile-status-' + request.id">
+                <option value="">Select status</option>
+                <option *ngFor="let option of getStaffStatusOptions(request)" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+              <textarea
+                *ngIf="selectedNextStatusByRequestId[request.id] === 'Rejected'"
+                class="form-control form-control-sm mb-2"
+                rows="2"
+                placeholder="Rejection note (optional)"
+                [(ngModel)]="selectedNextStatusByRequestId[request.id + '-notes']"
+                [name]="'mobile-notes-' + request.id"></textarea>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                [disabled]="!selectedNextStatusByRequestId[request.id] || isStatusLoading(request.id)"
+                (click)="changeStaffStatus(request)">
+                {{ isStatusLoading(request.id) ? 'Updating...' : ('COMMON.CHANGE_STATUS' | translate) }}
+              </button>
+            </div>
+            <ng-template #noStatusActionMobile>
+              <span class="text-muted small">No action available</span>
+            </ng-template>
+          </div>
+
+          <div class="mobile-request-actions-row">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary"
+              (click)="viewAttachments(request.id)">
+              <i class="fas fa-paperclip me-1"></i>{{ 'ATTACHMENTS.TITLE' | translate }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              (click)="viewComments(request.id)">
+              <i class="fas fa-comments me-1"></i>{{ 'COMMON.COMMENTS' | translate }}
+            </button>
+            <button
+              *ngIf="canDeleteRequest(request)"
+              type="button"
+              class="btn btn-sm btn-outline-danger"
+              [disabled]="isDeleteLoading(request.id)"
+              (click)="deleteRequest(request)">
+              <i class="fas fa-trash me-1"></i>{{ isDeleteLoading(request.id) ? ('COMMON.LOADING' | translate) : ('COMMON.DELETE' | translate) }}
+            </button>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 

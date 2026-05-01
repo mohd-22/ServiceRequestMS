@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
+using ServiceRequestMS.core.Models.Enums;
 using System.Security.Claims;
 
 namespace ServiceRequestMS.Api.Controllers;
@@ -15,7 +16,8 @@ public class CommentsController : ControllerBase
     {
         _commentService = commentService;
     }
-    [Authorize]
+
+    [Authorize(Roles = $"{nameof(UserRoles.Staff)},{nameof(UserRoles.Employee)}")]
     [HttpPost]
     public async Task<ActionResult> CreateComment(CreateCommentDto dto)
     {
@@ -40,7 +42,7 @@ public class CommentsController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = $"{nameof(UserRoles.Staff)},{nameof(UserRoles.Employee)}")]
     [HttpDelete("{id}")] 
     public async Task<IActionResult> DeleteComment(Guid id)
     {

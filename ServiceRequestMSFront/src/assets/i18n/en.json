@@ -139,7 +139,14 @@
     "ENTER_COMMENT": "Enter your comment...",
     "SUBMIT_COMMENT": "Submit Comment",
     "NO_COMMENTS": "No comments yet.",
-    "MENU": "Menu"
+    "MENU": "Menu",
+    "DELETE": "Delete",
+    "CLOSE": "Close"
+  },
+  "ATTACHMENTS": {
+    "TITLE": "Attachments",
+    "LOADING": "Loading attachments...",
+    "NO_ATTACHMENTS": "No attachments found."
   },
   "LANGUAGE": {
     "ENGLISH": "English",

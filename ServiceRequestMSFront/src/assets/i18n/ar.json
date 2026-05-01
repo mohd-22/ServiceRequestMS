@@ -139,7 +139,14 @@
     "ENTER_COMMENT": "اكتب تعليقك...",
     "SUBMIT_COMMENT": "إرسال التعليق",
     "NO_COMMENTS": "لا توجد تعليقات بعد.",
-    "MENU": "القائمة"
+    "MENU": "القائمة",
+    "DELETE": "حذف",
+    "CLOSE": "إغلاق"
+  },
+  "ATTACHMENTS": {
+    "TITLE": "المرفقات",
+    "LOADING": "جارٍ تحميل المرفقات...",
+    "NO_ATTACHMENTS": "لم يتم العثور على مرفقات."
   },
   "LANGUAGE": {
     "ENGLISH": "English",

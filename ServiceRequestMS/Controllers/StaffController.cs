@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.Services.Interfaces;
 using ServiceRequestMS.core.Models;
 using ServiceRequestMS.core.Models.Enums;
@@ -15,6 +16,8 @@ namespace ServiceRequestMS.Api.Controllers
         {
             _staffService = staffService;
         }
+
+        [Authorize(Roles = $"{nameof(UserRoles.Manager)}")]
         [HttpPost("AssignStaff")]
         public async Task<ActionResult<User>> AsignRequestToStaff(Guid RequestId, Guid StaffId)
         {
@@ -26,6 +29,8 @@ namespace ServiceRequestMS.Api.Controllers
             }
             return Ok(result);
         }
+
+        [Authorize(Roles = $"{nameof(UserRoles.Staff)}")]
         [HttpPost("UpdateStaffRequestStatus")]
         public async Task<ActionResult<User>> UpdateStaffRequestStatus(Guid requestId, RequestStatus nextStatus, string? staffNotes)
         {

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceRequestMS.Application.DTOs;
 using ServiceRequestMS.Application.Services.Interfaces;
+using ServiceRequestMS.core.Models.Enums;
 namespace ServiceRequestMS.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ItemController : ControllerBase
 {
     IItemService _itemService;
@@ -13,6 +16,7 @@ public class ItemController : ControllerBase
         _itemService = itemService;
     }
 
+    [Authorize(Roles = $"{nameof(UserRoles.Admin)}")]
     [HttpPost("CreateItem")]
     public async Task<ActionResult> CreateItem(ItemDto dto)
     {
@@ -36,7 +40,7 @@ public class ItemController : ControllerBase
         if (result.Success == false) return BadRequest(result);
         return Ok(result);
     }
-
+    [Authorize(Roles = $"{nameof(UserRoles.Admin)}")]
     [HttpPost("UpdateItems")]
     public async Task<ActionResult> UpdateItem(UpdateCategoryDto dto)
     {
